@@ -1,7 +1,7 @@
 # CMV
 
 ## The Data
-Te DATA is from [Changed My View](https://www.reddit.com/r/changemyview/) and can be downloaded on [Data_CMV](https://www.dropbox.com/sh/e7u90jw3zwqdkit/AADqa3YjfP8a6cTxt-NyqHc9a?dl=0)
+The DATA is from [Changed My View](https://www.reddit.com/r/changemyview/) and can be downloaded on [Data_CMV](https://www.dropbox.com/sh/e7u90jw3zwqdkit/AADqa3YjfP8a6cTxt-NyqHc9a?dl=0)
 
 In the data folder:
 04 - Comments Subset TopLevel Only
