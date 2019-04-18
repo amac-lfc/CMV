@@ -40,8 +40,9 @@ Decision Trees:
   * [Chapter 5: Random Forest Classifier](https://medium.com/machine-learning-101/chapter-5-random-forest-classifier-56dc7425c3e1)
 
 
-  ## To-Do List
-  1. Clean the data -> write 04 into a CMV file with the variables defined
-  2. Learning Sklearn/Decision tree/Random Forest
-  3. Write the algorithm
-  4. Test the data
+## To-Do List
+
+1. Clean the data -> write 04 into a CMV file with the variables defined
+2. Learning Sklearn/Decision tree/Random Forest
+3. Write the algorithm
+4. Test the data
