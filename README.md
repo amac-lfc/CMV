@@ -42,7 +42,7 @@ Decision Trees:
 
 ## To-Do List
 
-1. Clean the data -> write 04 into a CMV file with the variables defined
+1. Clean the data -> write 04 into a *csv* file with the variables defined
 2. Learning Sklearn/Decision tree/Random Forest
 3. Write the algorithm
 4. Test the data
