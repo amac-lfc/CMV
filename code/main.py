@@ -18,7 +18,7 @@ def data_to_csv(output_file, input_file, lines_to_read):
     writer = csv.writer(file, dialect='excel', delimiter=',')
 
     #first writer header row
-    writer.writerow(['subreddit', 'author', 'parent_id', 'id', 'Delta_Awarded', 'body', 'certainty_count', 'extremity_count',
+    writer.writerow(['author', 'parent_id', 'id', 'Delta_Awarded','certainty_count', 'extremity_count',
         'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count'])
 
     with open(input_file, mode='r', encoding="utf-8") as csv_file:
@@ -39,9 +39,9 @@ def data_to_csv(output_file, input_file, lines_to_read):
             link_count = getNumLinks(row["body"])
             quote_count = getNumQuotes(row["body"])
 
-            #column order: (subreddit, author, parent_id, id, Delta_Awarded, body,  certainty_count, extremity_count,
+            #column order: (author, parent_id, id, Delta_Awarded, certainty_count, extremity_count,
             #lexical_diversity_rounded, char_count_rounded, link_count, quote_count)
-            writer.writerow([row['subreddit'], row['author'], row['parent_id'], row['id'], row['Delta_Awarded'], cleanText(row['body']),
+            writer.writerow([row['author'], row['parent_id'], row['id'], row['Delta_Awarded'],
                                       certainty_count, extremity_count, lexical_diversity_rounded, char_count_rounded, link_count, quote_count])
 
             line_count += 1
