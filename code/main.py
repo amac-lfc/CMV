@@ -1,7 +1,5 @@
 from lib import *
 import csv
-
-
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -16,15 +14,11 @@ input_file = opt.i
 lines_to_read = opt.n
 
 def data_to_csv(output_file, input_file, lines_to_read):
-
-    file = open(output_file, mode="w",encoding="utf-8", newline='')
     writer = csv.writer(file, dialect='excel', delimiter=',')
 
     #first writer header row
-    writer.writerow(['subreddit', 'author', 'parent_id', 'id', 'Delta_Awarded', 'body_html', 'certainty_count', 'extremity_count',
+    writer.writerow(['subreddit', 'author', 'parent_id', 'id', 'Delta_Awarded', 'body', 'certainty_count', 'extremity_count',
         'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count'])
-
-    print("Header row written.")
 
     with open(input_file, mode='r', encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -41,20 +35,18 @@ def data_to_csv(output_file, input_file, lines_to_read):
             lexical_diversity = getLexicalDiversity(row["body"])
             lexical_diversity_rounded = round(100 * lexical_diversity, -1)
             char_count_rounded = round(len(row["body"]), -3)
-            link_count = getNumLinks(row["body_html"])
+            link_count = getNumLinks(row["body"])
             quote_count = getNumQuotes(row["body"])
 
-            #column order: (subreddit, author, parent_id, id, Delta_Awarded, body, body_html, certainty_count, extremity_count,
+            #column order: (subreddit, author, parent_id, id, Delta_Awarded, body,  certainty_count, extremity_count,
             #lexical_diversity_rounded, char_count_rounded, link_count, quote_count)
-            writer.writerow([row['subreddit'], row['author'], row['parent_id'], row['id'], row['Delta_Awarded'],
+            writer.writerow([row['subreddit'], row['author'], row['parent_id'], row['id'], row['Delta_Awarded'], cleanText(row['body']),
                                       certainty_count, extremity_count, lexical_diversity_rounded, char_count_rounded, link_count, quote_count])
-
 
             line_count += 1
             if (line_count >= lines_to_read) and (lines_to_read>0):
                   break;
-        print(f'Processed {line_count} lines.')
-    file.close()
+    print(f'Processed {line_count} lines.')
 
 
 if __name__ == '__main__':
