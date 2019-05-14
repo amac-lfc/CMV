@@ -14,6 +14,7 @@ input_file = opt.i
 lines_to_read = opt.n
 
 def data_to_csv(output_file, input_file, lines_to_read):
+    file = open(output_file, mode='w', encoding="utf-8")
     writer = csv.writer(file, dialect='excel', delimiter=',')
 
     #first writer header row
@@ -47,6 +48,7 @@ def data_to_csv(output_file, input_file, lines_to_read):
             if (line_count >= lines_to_read) and (lines_to_read>0):
                   break;
     print(f'Processed {line_count} lines.')
+    file.close()
 
 
 if __name__ == '__main__':
