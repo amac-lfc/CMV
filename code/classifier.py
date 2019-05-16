@@ -3,6 +3,13 @@ from random import shuffle
 from sklearn import tree
 from sklearn.metrics import accuracy_score
 
+def grab(value,data):
+    grabbed_data = []
+    for i in data:
+        if i[1] == value:
+            grabbed_data.append(i)
+    return grabbed_data
+
 def evenOutData(data, max_lines):
     with_delta = 0
     no_delta = 0
@@ -64,11 +71,15 @@ print("Splitting Data into Train and Test")
 train_data = fixed_data[:int(len(fixed_data) *.8)]
 test_data = fixed_data[int(len(fixed_data) * .8):]
 x_train, y_train = separateData(train_data)
-x_test, y_test = separateData(test_data)
+
+#This makes it so the test data only contains deltas
+delta_test_data = grab('1', test_data)
+x_test, y_test = separateData(delta_test_data)
 
 clf_tree = tree.DecisionTreeClassifier()
 print("Training Decision Tree")
 clf_tree = clf_tree.fit(x_train,y_train)
+
 
 print("Checking for Accuracy")
 y_predict = clf_tree.predict(x_test)
