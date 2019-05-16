@@ -40,11 +40,11 @@ def separateData(data):
 def readInputFile(input_file, lines_to_read):
     data = []
 
-    with open(input_file, mode='r', encoding="utf-8") as csv_file:
+    with open(input_file, mode='r', encoding='utf-8') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         line_count = 0
         for row in csv_reader:
-            feature = [row['certainty_count'], row['extremity_count'], row["lexical_diversity_rounded"],
+            feature = [row['certainty_count'], row['extremity_count'], row['lexical_diversity_rounded'],
                        row['char_count_rounded'], row['link_count'], row['quote_count']]
             data.append([feature,row['Delta_Awarded']])
             line_count += 1
@@ -58,13 +58,13 @@ data = readInputFile("../data.csv",1000000)
 
 print("Randomizing and Evening Out Data")
 shuffle(data)
-data = evenOutData(data,5000)
+fixed_data = evenOutData(data,5000)
 
 print("Splitting Data into Train and Test")
-train_data = data[:int(len(data) *.8)]
-test_data = data[int(len(data) * .8):]
+train_data = fixed_data[:int(len(fixed_data) *.8)]
+test_data = fixed_data[int(len(fixed_data) * .8):]
 x_train, y_train = separateData(train_data)
-x_test, y_test = separateData(data)
+x_test, y_test = separateData(test_data)
 
 clf_tree = tree.DecisionTreeClassifier()
 print("Training Decision Tree")
