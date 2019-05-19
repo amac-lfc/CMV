@@ -20,7 +20,7 @@ def evenOutData(data, max_lines):
         else:
             with_delta += 1
     num_of_each = min(with_delta, no_delta, max_lines)
-    print(f'Using {2 * num_of_each} Lines from Data')
+    print(f'Using {num_of_each} Lines from Delta and {num_of_each} Lines from No Delta')
 
     with_delta = 0
     no_delta = 0
@@ -65,7 +65,7 @@ data = readInputFile("../data.csv",1000000)
 
 print("Randomizing and Evening Out Data")
 shuffle(data)
-fixed_data = evenOutData(data,5000)
+fixed_data = evenOutData(data, 5000)
 
 print("Splitting Data into Train and Test")
 train_data = fixed_data[:int(len(fixed_data) *.8)]
@@ -76,10 +76,9 @@ x_train, y_train = separateData(train_data)
 delta_test_data = grab('1', test_data)
 x_test, y_test = separateData(delta_test_data)
 
-clf_tree = tree.DecisionTreeClassifier()
+clf_tree = tree.DecisionTreeClassifier(max_depth=5)
 print("Training Decision Tree")
 clf_tree = clf_tree.fit(x_train,y_train)
-
 
 print("Checking for Accuracy")
 y_predict = clf_tree.predict(x_test)
