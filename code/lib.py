@@ -1,3 +1,12 @@
+import csv
+from random import shuffle
+import numpy as np
+from sklearn import tree
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score
+from sklearn.ensemble import RandomForestClassifier
+import matplotlib.pyplot as plt
+
 # Lib
 
 #optimize the loops so you only need to run through the text once
@@ -32,17 +41,10 @@ def getNumQuotes(text):
     return text.count(">")
 
 def cleanText(text):
-    len_of_text = len(text)
-    print(f"Total num of chars: {len_of_text}")
-    print_nums = [int(i/10 * len_of_text) for i in range(1,10)]
-    count = 0
     punc = '\"\\/;:,.!?\n><()[]{}-'
     for char in text:
-        if count in print_nums:
-            print(f"{count*100//len_of_text + 1}% Complete")
         if (char in punc):
             text = text.replace(char, " ")
-        count += 1
     return text
 
 def getCommonWords(num_of_words, text):
@@ -59,3 +61,77 @@ def getCommonWords(num_of_words, text):
     for i in range(num_of_words):
         result.append(word_counts[i][1])
     return result
+
+def simplifyCSV(input_file):
+    output_file = "cleaned_" + input_file
+    file = open(output_file, mode='w', encoding="utf-8")
+    writer = csv.writer(file, dialect='excel', delimiter=',')
+
+    writer.writerow(['Delta_Awarded','body'])
+
+    with open(input_file, mode='r', encoding="utf-8") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            ", ".join(row)
+
+            writer.writerow([row['Delta_Awarded'],row['body']])
+    file.close()
+
+def cleanCSV(input_file):
+    output_file = "cleaned_" + input_file
+    file = open(output_file, mode='w', encoding="utf-8")
+    writer = csv.writer(file, dialect='excel', delimiter=',')
+
+    writer.writerow(['Delta_Awarded','body'])
+
+    with open(input_file, mode='r', encoding="utf-8") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            ", ".join(row)
+            writer.writerow([row['Delta_Awarded'], cleanText(row['body'])])
+    file.close()
+
+def separateCSV(input_file):
+    delta_output_file = "delta_" + input_file
+    nodelta_output_file = "nodelta_" + input_file
+
+    delta_file = open(delta_output_file, mode='w', encoding="utf-8")
+    nodelta_file = open(nodelta_output_file, mode='w', encoding="utf-8")
+
+    delta_writer = csv.writer(delta_file, dialect='excel', delimiter=',')
+    nodelta_writer = csv.writer(nodelta_file, dialect='excel', delimiter=',')
+
+    delta_writer.writerow(['Delta_Awarded','body'])
+    nodelta_writer.writerow(['Delta_Awarded','body'])
+
+    with open(input_file, mode='r', encoding="utf-8") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            ", ".join(row)
+            if row['Delta_Awarded'] == '1':
+                delta_writer.writerow([row['Delta_Awarded'], row['body']])
+            elif row['Delta_Awarded'] == '0':
+                nodelta_writer.writerow([row['Delta_Awarded'], row['body']])
+    delta_file.close()
+    nodelta_file.close()
+
+def getImportances(classifier, X, features_list):
+    importances = classifier.feature_importances_
+    std = np.std([tree.feature_importances_ for tree in classifier.estimators_],
+                 axis=0)
+    indices = np.argsort(importances)[::-1]
+
+    # Print the feature ranking
+    print("Feature ranking:")
+
+    for f in range(X.shape[1]):
+        print(f"{f + 1}. Feature {features_list[indices[f]]} ({importances[indices[f]]})")
+
+    # Plot the feature importances of the forest
+    # plt.figure()
+    # plt.title("Feature importances")
+    # plt.bar(range(X.shape[1]), importances[indices],
+    #        color="r", yerr=std[indices], align="center")
+    # plt.xticks(range(X.shape[1]), indices)
+    # plt.xlim([-1, X.shape[1]])
+    # plt.show()
