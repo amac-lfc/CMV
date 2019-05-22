@@ -90,6 +90,11 @@ print(cleanText(text))
 
 #Test 4
 #Getting num most common words from text
-text = "i absolutely very very much love using words like certain commit and wonderful here is a link http://google.com. \n>This person said I commit wonderful things"
-text = cleanText(text)
-print(getCommonWords(5, text))
+# text = "i absolutely very very much love using words like certain commit and wonderful here is a link http://google.com. \n>This person said I commit wonderful things"
+# text = cleanText(text)
+# print(getCommonWords(5, text))
+
+#Separating csv
+# print("Separating CSV file into delta and no delta files")
+# separateCSV("cleaned_comments.csv")
+# print("done")

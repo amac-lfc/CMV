@@ -38,7 +38,7 @@ delta_text = cleanText(delta_text)
 #no_delta_text = cleanText(no_delta_text)
 
 print("Organizing Most Common Words")
-common_words = getCommonWords(2500,delta_text)
+common_words = getCommonWords(200,delta_text)
 
 print(common_words)
 print("Writing to Text File")
