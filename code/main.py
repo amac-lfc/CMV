@@ -1,3 +1,5 @@
+import sys
+sys.path.append('modules/')
 from lib import *
 import csv
 
@@ -46,4 +48,4 @@ def data_to_csv(output_file, input_file, lines_to_read):
     print(f'Processed {line_count} lines.')
     file.close()
 
-data_to_csv("true_data.csv", "../TextData.csv", 800000)
+data_to_csv("../CSVs/true_data.csv", "../CSVs/TextData.csv", 800000)

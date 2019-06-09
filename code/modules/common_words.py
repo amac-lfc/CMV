@@ -4,10 +4,10 @@ from lib import *
 import csv
 
 lines_to_read = 800000
-input_file = "../TextData.csv"
+input_file = "../../CSVs/TextData.csv"
 
 # no_delta_words_file = open("../no_delta_words.txt", mode='w', encoding="utf-8")
-delta_words_file = open("../delta_words.txt", mode='w', encoding="utf-8")
+delta_words_file = open("../../delta_words.txt", mode='w', encoding="utf-8")
 
 # no_delta_text = ""
 delta_text = ""
@@ -38,7 +38,7 @@ delta_text = cleanText(delta_text)
 #no_delta_text = cleanText(no_delta_text)
 
 print("Organizing Most Common Words")
-common_words = getCommonWords(200,delta_text)
+common_words = getCommonWords(500,delta_text)
 
 print(common_words)
 print("Writing to Text File")
