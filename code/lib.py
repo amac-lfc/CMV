@@ -12,7 +12,11 @@ import matplotlib.pyplot as plt
 #optimize the loops so you only need to run through the text once
 
 # these are the words of certainty
-wOC = ["absolutely", "always", "certain", "commit", "completely", "every", "exact"]
+wOC = [ 'absolutely', 'always', 'certain', 'certainly', 'clear', 'clearly', 'commit', 'committed', 'complete', 'completed', 
+        'completely', 'every', 'exact', 'exactly', 'extremist', 'extreme', 'extremely', 'forever', 'indeed', 'inevitable',
+        'inevitably', 'must', 'never', 'perfect', 'perfectly', 'perfection', 'perfected', 'positive', 'positivity', 
+        'positivley', 'precise', 'precisely', 'precision', 'totally', 'truly',' undeniably', 'undeniable', 'undoubtedly', 
+        'undoubted', 'unquestioned', 'unquestionably', 'unquestionable', 'unquestioning']
 
 # this is a function that counts the number of words of certainty
 getCertaintyCount = lambda text,word_i=0: text.count(wOC[word_i]) if word_i == len(wOC) - 1 else text.count(wOC[word_i]) + getCertaintyCount(text, word_i+1)
@@ -39,6 +43,17 @@ def getNumLinks(text):
 # here is the counter for num of quotes
 def getNumQuotes(text):
     return text.count(">")
+
+def getNumQuestions(text):
+    return text.count("?")
+
+def getNumBold(text):
+    return text.count("**")
+
+def getNumAvgSentences(text):
+    sents = text.split('.')
+    avg_len = sum(len(x.split()) for x in sents) / len(sents)
+    return int(avg_len)
 
 def cleanText(text):
     punc = '\"\\/;:,.!?\n><()[]{}-'
