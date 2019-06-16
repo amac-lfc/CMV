@@ -4,7 +4,7 @@ from lib import *
 import csv
 
 lines_to_read = -1
-input_file = "../delta_comments.csv"
+input_file = "./delta_comments.csv"
 
 # no_delta_words_file = open("../no_delta_words.txt", mode='w', encoding="utf-8")
 delta_words_file = open("./delta_words.txt", mode='w', encoding="utf-8")

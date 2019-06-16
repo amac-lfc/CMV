@@ -22,10 +22,24 @@ wOC = [ 'absolutely', 'always', 'certain', 'certainly', 'clear', 'clearly', 'com
 getCertaintyCount = lambda text,word_i=0: text.count(wOC[word_i]) if word_i == len(wOC) - 1 else text.count(wOC[word_i]) + getCertaintyCount(text, word_i+1)
 
 # initial words of extremity
-eWC = ["much", "more", "extremely", "very", "wonderful"]
+eWC = ["much", "more", "extremely", "very",
+'multiple', 'many', 'extremely', 'extremeness', 'extremely', 'verier', 
+'veriest', 'wonderfully', 'wonderful', 'wonderfulness', "she detested him," 
+"very serious," 'seriously', 'seriousness', "very effective," 'effectively', 'effectiveness', 
+'dramatic', 'dramtically', 'increases', 'increasing', 'increased', 'increasing', 'great', 'greater', 'greatest', 
+'greatly', 'exaggerate', 'exaggerated', "strongly support," 'strong', 'stronger', 'strongest', 'strongly',  "extremely certain," 
+'certain', 'certainly', 'extremist', 'extreme', 'extremely', 'amazing', 'amazes', 'amazingly', 'amazed', 'amaze']
 
 # this function counts the total of
 getExtremityCount = lambda text,word_i=0: text.count(eWC[word_i]) if word_i == len(eWC) - 1 else text.count(eWC[word_i]) + getExtremityCount(text, word_i+1)
+
+# words of intensity
+# iWC = ["best of all," 'best', 'bestest', 'favorite', 'favorable', 'intense', 'intensified', 'intensely', 'excel', 
+#         'excelled', 'excellent', 'wonderful', 'wonderfulness',"strongly like," 'strong', 'stronger', 'strongest', "mighty fine", "especially good",
+#          "mighty favorable," 'enjoy', 'enjoyed', 'enjoyable', 'enjoyment', 
+
+# words of low intensity      
+# liWC = ['preferred', 'prefferable', 'better', 'good', "fairly well", "moderately", 'slighly']
 
 # here is the calculator for lexical diversity
 def getLexicalDiversity(text):
@@ -54,6 +68,9 @@ def getNumAvgSentences(text):
     sents = text.split('.')
     avg_len = sum(len(x.split()) for x in sents) / len(sents)
     return int(avg_len)
+
+def getNumEnumeration(text):
+    return text.count("1.")
 
 def cleanText(text):
     punc = '\"\\/;:,.!?\n><()[]{}-'
