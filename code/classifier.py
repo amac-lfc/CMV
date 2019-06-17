@@ -59,8 +59,7 @@ features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounde
                 'questions_count', 'bold_count', 'avgSentences_count', 'enumeration'] + common_words
 
 print('Reading File and Creating Data')
-Deltas = readInputFile("Delta_Data.csv",1,10)
-print(Deltas)
+Deltas = readInputFile("Delta_Data.csv",1,-1)
 NoDeltas = readInputFile("NoDelta_Data_Sample.csv",0,-1)
 fixed_data = Deltas+NoDeltas
 
