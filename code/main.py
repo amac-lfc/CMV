@@ -6,14 +6,14 @@ import csv
 common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 
 lines_to_read = -1
-NumWords = 100
+NumWords = 200
 
 def data_to_csv(output_file, input_file, lines_to_read, NumWords):
     file = open(output_file, mode='w', encoding="utf-8")
     writer = csv.writer(file, dialect='excel', delimiter=',')
     header = ['author', 'parend_id', 'id',  'certainty_count', 'extremity_count', 
                 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count', 'questions_count', 
-                'bold_count', 'avgSentences_count']
+                'bold_count', 'avgSentences_count', 'enumeration']
 
     #first writer header row
     writer.writerow(header + common_words[:NumWords])
@@ -38,6 +38,7 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
             questions_count = getNumQuestions(body)
             bold_count = getNumBold(body)
             avgSentences_count = getNumAvgSentences(body)
+            enumeration_count = getNumEnumeration(body)
 
             lst = []
             for word in common_words[:NumWords]:
@@ -48,7 +49,7 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
             #lexical_diversity_rounded, char_count_rounded, link_count, quote_count)
             writer.writerow([row['author'], row['parend_id'], row['id'], certainty_count, extremity_count, 
                             lexical_diversity_rounded, char_count_rounded, link_count, quote_count, questions_count, 
-                            bold_count, avgSentences_count] + lst)
+                            bold_count, avgSentences_count, enumeration_count] + lst)
 
             line_count += 1
             if (line_count >= lines_to_read) and (lines_to_read>0):
@@ -57,5 +58,5 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
     file.close()
 
 
-data_to_csv("Delta_Data.csv", "../delta_comments.csv", lines_to_read, NumWords)
-data_to_csv("NoDelta_Data.csv", "../nodelta_comments.csv", lines_to_read, NumWords)
+data_to_csv("Delta_Data.csv", "./delta_comments.csv", lines_to_read, NumWords)
+data_to_csv("NoDelta_Data.csv", "./nodelta_comments.csv", lines_to_read, NumWords)
