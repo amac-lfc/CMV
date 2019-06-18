@@ -31,7 +31,7 @@ print("Loading Common Words and Creating Features List")
 NumWords = 200
 common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 common_words = common_words[:NumWords]
-features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count', 
+features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count',
                 'questions_count', 'bold_count', 'avgSentences_count', 'enumeration'] + common_words
 
 print('Reading File and Creating Data')
@@ -48,9 +48,9 @@ y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
 NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))
 fixed_data = np.concatenate((Deltas,NoDeltas), axis=0)
 
-
 print("Randomizing and Evening Out Data")
-shuffle(fixed_data)
+#shuffle(fixed_data)
+np.random.shuffle(fixed_data)
 
 print("Splitting Data into Train and Test")
 train_data = fixed_data[:int(len(fixed_data) *.8)]
@@ -69,6 +69,16 @@ x_test = test_data[:,:-1]
 y_test = test_data[:,-1]
 y_test = y_test.astype('int')
 
+# delta_count = 0
+# nodelta_count = 0
+# for i in y_train:
+#     if i == 1:
+#         delta_count += 1
+#     else:
+#         nodelta_count += 1
+#     print(i,end="")
+# print()
+# print(delta_count,nodelta_count)
 
 
 print("Training Decision Tree, Naive Bayes Classifier, and Random Forest Classifier")
@@ -113,12 +123,12 @@ clf_RF = clf_RF.fit(x_train,y_train)
 
 
 
-getImportances(clf_RF, x_train, features_list)
+# getImportances(clf_RF, x_train, features_list)
 
 print("Checking for Accuracy")
 # y_predict = clf_tree.predict(x_test)
 # print(f"Accuracy score for Decision Tree is: {accuracy_score(y_test, y_predict)}")
-
+#
 # y_predict = clf_MNB.predict(x_test)
 # print(f"Accuracy score for Naive Bayes Classifier is: {accuracy_score(y_test, y_predict)}")
 

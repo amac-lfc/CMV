@@ -39,7 +39,7 @@ def readInputFile(input_file, delta, lines_to_read):
                 common_word_counts.append(row[word])
 
             feature = [row['certainty_count'], row['extremity_count'], row['lexical_diversity_rounded'],
-                       row['char_count_rounded'], row['link_count'], row['quote_count'], row['questions_count'], 
+                       row['char_count_rounded'], row['link_count'], row['quote_count'], row['questions_count'],
                        row['bold_count'], row['avgSentences_count'], row['enumeration']] + common_word_counts
 
             data.append([feature, delta])
@@ -55,7 +55,7 @@ NumWords = 200
 common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 common_words = common_words[:NumWords]
 print(common_words[-1])
-features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count', 
+features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count',
                 'questions_count', 'bold_count', 'avgSentences_count', 'enumeration'] + common_words
 
 print('Reading File and Creating Data')
