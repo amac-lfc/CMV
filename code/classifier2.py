@@ -59,15 +59,33 @@ x_train = train_data[:,:-1]
 # x_train = x_train.astype('int')
 y_train = train_data[:,-1]
 y_train=y_train.astype('int')
-# print(x_train.shape, y_train.shape)
+print(x_train.shape, y_train.shape)
+x_test = test_data[:,:-1]
+y_test = test_data[:,-1]
+y_test = y_test.astype('int')
+
+print("Deltas, NoDeltas = ",len(y_Deltas), len(y_NoDeltas))
+
 
 #This makes it so the test data only contains data with deltas
 #test_data = grab('1', test_data)
 
-x_test = test_data[:,:-1]
-# x_test = x_test.astype('int')
-y_test = test_data[:,-1]
-y_test = y_test.astype('int')
+
+
+# df = pd.read_csv('Delta_Data.csv', delimiter = ",")
+# Deltas = df.values[:,3:]
+# y_Deltas = np.ones(len(Deltas[:,0]),'i')
+# Deltas = np.column_stack((Deltas,y_Deltas))
+# df2 = pd.read_csv('NoDelta_Data.csv', delimiter = ",")
+# NoDeltas = df2.values[:,3:]
+# y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
+# NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))
+# test_data = NoDeltas#np.concatenate((Deltas,NoDeltas), axis=0)
+# np.random.shuffle(test_data)
+# test_data = test_data[:40000]
+# x_test = test_data[:,:-1]
+# y_test = test_data[:,-1]
+# y_test = y_test.astype('int')
 
 # delta_count = 0
 # nodelta_count = 0
@@ -123,7 +141,7 @@ clf_RF = clf_RF.fit(x_train,y_train)
 
 
 
-# getImportances(clf_RF, x_train, features_list)
+getImportances(clf_RF, x_train, features_list)
 
 print("Checking for Accuracy")
 # y_predict = clf_tree.predict(x_test)
@@ -134,3 +152,6 @@ print("Checking for Accuracy")
 
 y_predict = clf_RF.predict(x_test)
 print(f"Accuracy score for Random Forest Classifier is: {accuracy_score(y_test, y_predict)}")
+ndeltas = np.where(y_test == 1)[0]
+ndeltas2 = np.where(y_test == 0)[0]
+print(len(ndeltas2), len(ndeltas),len(y_test),len(ndeltas)/len(y_test)*100)
