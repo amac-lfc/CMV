@@ -8,9 +8,9 @@ from lib import *
 from sklearn import tree
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
-from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
+import random as rd
 
 
 def grab(value,data):
@@ -30,10 +30,10 @@ def separateData(data):
 
 print("Loading Common Words and Creating Features List")
 NumWords = 200
-common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
-common_words = common_words[:NumWords]
+# common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
+# common_words = common_words[:NumWords]
 features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count',
-                'questions_count', 'bold_count', 'avgSentences_count', 'enumeration'] + common_words
+                'questions_count', 'bold_count', 'avgSentences_count', 'enumeration', 'excla'] #+ common_words
 
 print('Reading File and Creating Data')
 df = pd.read_csv('Delta_Data.csv', delimiter = ",")
@@ -47,6 +47,12 @@ ds = pd.read_csv('NoDelta_Data_Sample.csv', delimiter = ",")
 NoDeltas = ds.values[:,3:]
 y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
 NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))
+
+
+while Deltas.shape[0] < NoDeltas.shape[0]:
+    i = rd.randint(0,Deltas.shape[0]-1)
+    Deltas = np.concatenate((Deltas, Deltas[i,:][np.newaxis,:]), axis=0)
+
 fixed_data = np.concatenate((Deltas,NoDeltas), axis=0)
 
 print("Randomizing and Evening Out Data")
@@ -65,7 +71,8 @@ x_test = test_data[:,:-1]
 y_test = test_data[:,-1]
 y_test = y_test.astype('int')
 
-print("Deltas, NoDeltas = ",len(y_Deltas), len(y_NoDeltas))
+print("Deltas, NoDeltas = ", len(y_Deltas), len(y_NoDeltas))
+print("Deltas, NoDeltas = ", Deltas.shape, NoDeltas.shape)
 
 
 #This makes it so the test data only contains data with deltas
@@ -102,8 +109,6 @@ print("Deltas, NoDeltas = ",len(y_Deltas), len(y_NoDeltas))
 
 print("Training Decision Tree, Naive Bayes Classifier, and Random Forest Classifier")
 #Creating the Classifiers
-clf_SVC = SVC(gamma='auto')
-
 clf_RF = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
             max_depth=80, max_features=3, max_leaf_nodes=None,
             min_impurity_decrease=0.0, min_impurity_split=None,
@@ -128,39 +133,33 @@ clf_RF = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='en
 # print(grid_search.best_params_)
 # clf_RF = grid_search.best_estimator_
 
-clf_tree = tree.DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
-            max_features=None, max_leaf_nodes=None,
-            min_impurity_decrease=0.0, min_impurity_split=None,
-            min_samples_leaf=1, min_samples_split=2,
-            min_weight_fraction_leaf=0.0, presort=False, random_state=None,
-            splitter='best')
-clf_MNB = MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
+# clf_tree = tree.DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
+#             max_features=None, max_leaf_nodes=None,
+#             min_impurity_decrease=0.0, min_impurity_split=None,
+#             min_samples_leaf=1, min_samples_split=2,
+#             min_weight_fraction_leaf=0.0, presort=False, random_state=None,
+#             splitter='best')
+# clf_MNB = MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
 
 #Training the Classifiers
 x_train = np.asarray(x_train)
 clf_RF = clf_RF.fit(x_train,y_train)
-clf_tree = clf_tree.fit(x_train,y_train)
-clf_MNB = clf_MNB.fit(x_train,y_train)
-clf_SVC = clf_SVC.fit(x_train,y_train)
+# clf_tree = clf_tree.fit(x_train,y_train)
+# clf_MNB = clf_MNB.fit(x_train,y_train)
 
 
 
-# getImportances(clf_RF, x_train, features_list)
+getImportances(clf_RF, x_train, features_list)
 
 print("Checking for Accuracy")
-y_predict = clf_SVC.predict(x_test)
-print(f"Accuracy score for SVM Classifier is: {accuracy_score(y_test, y_predict)}")
-
-y_predict = clf_tree.predict(x_test)
-print(f"Accuracy score for Decision Tree is: {accuracy_score(y_test, y_predict)}")
-
-y_predict = clf_MNB.predict(x_test)
-print(f"Accuracy score for Naive Bayes Classifier is: {accuracy_score(y_test, y_predict)}")
+# y_predict = clf_tree.predict(x_test)
+# print(f"Accuracy score for Decision Tree is: {accuracy_score(y_test, y_predict)}")
+#
+# y_predict = clf_MNB.predict(x_test)
+# print(f"Accuracy score for Naive Bayes Classifier is: {accuracy_score(y_test, y_predict)}")
 
 y_predict = clf_RF.predict(x_test)
 print(f"Accuracy score for Random Forest Classifier is: {accuracy_score(y_test, y_predict)}")
-
-
 ndeltas = np.where(y_test == 1)[0]
 ndeltas2 = np.where(y_test == 0)[0]
 print(len(ndeltas2), len(ndeltas),len(y_test),len(ndeltas)/len(y_test)*100)
