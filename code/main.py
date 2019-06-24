@@ -1,16 +1,22 @@
+import sys
+sys.path.append('modules/')
 from lib import *
 import csv
 
-common_words = open(r"../delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
+common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 
-def data_to_csv(output_file, input_file, lines_to_read):
+lines_to_read = -1
+NumWords = 200
+
+def data_to_csv(output_file, input_file, lines_to_read, NumWords):
     file = open(output_file, mode='w', encoding="utf-8")
     writer = csv.writer(file, dialect='excel', delimiter=',')
-    header = ['author', 'parent_id', 'id', 'Delta_Awarded','certainty_count', 'extremity_count',
-        'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count']
+    header = ['author', 'parend_id', 'id',  'certainty_count', 'extremity_count', 
+                'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count', 'questions_count', 
+                'bold_count', 'avgSentences_count', 'enumeration']
 
     #first writer header row
-    writer.writerow(header + common_words)
+    writer.writerow(header + common_words[:NumWords])
 
     with open(input_file, mode='r', encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -29,16 +35,21 @@ def data_to_csv(output_file, input_file, lines_to_read):
             char_count_rounded = round(len(body), -3)
             link_count = getNumLinks(body)
             quote_count = getNumQuotes(body)
+            questions_count = getNumQuestions(body)
+            bold_count = getNumBold(body)
+            avgSentences_count = getNumAvgSentences(body)
+            enumeration_count = getNumEnumeration(body)
 
             lst = []
-            for word in common_words:
+            for word in common_words[:NumWords]:
                 lst.append(body.count(word))
 
 
             #column order: (author, parent_id, id, Delta_Awarded, certainty_count, extremity_count,
             #lexical_diversity_rounded, char_count_rounded, link_count, quote_count)
-            writer.writerow([row['author'], row['parent_id'], row['id'], row['Delta_Awarded'],
-                                      certainty_count, extremity_count, lexical_diversity_rounded, char_count_rounded, link_count, quote_count] + lst)
+            writer.writerow([row['author'], row['parend_id'], row['id'], certainty_count, extremity_count, 
+                            lexical_diversity_rounded, char_count_rounded, link_count, quote_count, questions_count, 
+                            bold_count, avgSentences_count, enumeration_count] + lst)
 
             line_count += 1
             if (line_count >= lines_to_read) and (lines_to_read>0):
@@ -46,4 +57,6 @@ def data_to_csv(output_file, input_file, lines_to_read):
     print(f'Processed {line_count} lines.')
     file.close()
 
-data_to_csv("true_data.csv", "../TextData.csv", 800000)
+
+data_to_csv("Delta_Data.csv", "./delta_comments.csv", lines_to_read, NumWords)
+data_to_csv("NoDelta_Data.csv", "./nodelta_comments.csv", lines_to_read, NumWords)
