@@ -29,7 +29,6 @@ def separateData(data):
     return features, labels
 
 print("Loading Common Words and Creating Features List")
-NumWords = 200
 # common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 # common_words = common_words[:NumWords]
 features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count',

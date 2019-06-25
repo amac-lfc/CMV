@@ -72,6 +72,9 @@ def getNumAvgSentences(text):
 def getNumEnumeration(text):
     return text.count("1.")
 
+def getNumExcla(text):
+    return text.count("!")
+
 def cleanText(text):
     punc = '\"\\/;:,.!?\n><()[]{}-'
     for char in text:
