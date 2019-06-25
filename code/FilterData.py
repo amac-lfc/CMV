@@ -1,7 +1,7 @@
 import csv
 
 #Slims down file that's below into only useful stuff
-input_file = "01 - RawData\\01 - RawData\\2019-02-11 - Extracted Reddit Data - Comments - MetaData.csv"
+input_file = "/home/shared/CMV/01 - RawData/01 - RawData/2019-02-11 - Extracted Reddit Data - Comments - MetaData.csv"
 lines_to_read = -1
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     file = open("Slimmed_Comments_MetaData", mode='w', encoding="utf-8")
@@ -28,7 +28,7 @@ Replacements = [["&nbsp;", " "], ["&iexcl;", "¡"], ["&cent;", "¢"], ["&pound;"
 
 
 #Slims down file that's below into only useful stuff
-input_file = "01 - RawData\\01 - RawData\\2019-02-11 - Extracted Reddit Data - Comments - TextData.csv"
+input_file = "/home/shared/CMV/01 - RawData/01 - RawData/2019-02-11 - Extracted Reddit Data - Comments - TextData.csv"
 lines_to_read = -1
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     file = open("Slimmed_Comments_TextData", mode='w', encoding="utf-8")
@@ -55,7 +55,7 @@ with open(input_file, mode='r', encoding="utf-8") as csv_file:
     file.close()
 
 #Slims down file that's below into only useful stuff
-input_file = "01 - RawData\\01 - RawData\\2019-02-11 - Extracted Reddit Data - Submissions - MetaData.csv"
+input_file = "/home/shared/CMV/01 - RawData/01 - RawData/2019-02-11 - Extracted Reddit Data - Submissions - MetaData.csv"
 lines_to_read = -1
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     file = open("Slimmed_Submissions_MetaData", mode='w', encoding="utf-8")
@@ -78,7 +78,7 @@ with open(input_file, mode='r', encoding="utf-8") as csv_file:
     file.close()
 
 #Slims down file that's below into only useful stuff
-input_file = "01 - RawData\\01 - RawData\\2019-02-11 - Extracted Reddit Data - Submissions - TextData.csv"
+input_file = "/home/shared/CMV/01 - RawData/01 - RawData/2019-02-11 - Extracted Reddit Data - Submissions - TextData.csv"
 lines_to_read = -1
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     file = open("Slimmed_Submissions_TextData", mode='w', encoding="utf-8")

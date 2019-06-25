@@ -12,7 +12,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 import random as rd
 
-
 def grab(value,data):
     grabbed_data = []
     for i in data:
@@ -35,14 +34,14 @@ features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounde
                 'questions_count', 'bold_count', 'avgSentences_count', 'enumeration', 'excla'] #+ common_words
 
 print('Reading File and Creating Data')
-df = pd.read_csv('Delta_Data.csv', delimiter = ",")
+df = pd.read_csv('/home/shared/CMV/Delta_Data.csv', delimiter = ",")
 Deltas = df.values[:,3:]
 y_Deltas = np.ones(len(Deltas[:,0]),'i')
 Deltas = np.column_stack((Deltas,y_Deltas))
 # print(Deltas[:10])
 # df = pd.read_csv('NoDelta_Data.csv', delimiter = ",")
 # ds = df.sample(frac=0.005)
-ds = pd.read_csv('NoDelta_Data_Sample.csv', delimiter = ",")
+ds = pd.read_csv('/home/shared/CMV/NoDelta_Data_Sample.csv', delimiter = ",")
 NoDeltas = ds.values[:,3:]
 y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
 NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))

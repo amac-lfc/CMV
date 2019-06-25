@@ -1,14 +1,14 @@
 import csv
 
-good_deltas = open("good_deltas.txt",mode='r', encoding="utf-8").read().split("\n")[:-1]
+good_deltas = open("/home/shared/CMV/good_deltas.txt",mode='r', encoding="utf-8").read().split("\n")[:-1]
 
-bad_deltas = open("bad_deltas.txt",mode='r', encoding="utf-8").read().split("\n")[:-1]
+bad_deltas = open("/home/shared/CMV/bad_deltas.txt",mode='r', encoding="utf-8").read().split("\n")[:-1]
 
-input_file = "../Slimmed_Comments_TextData.csv"
+input_file = "/home/shared/CMV/Slimmed_Comments_TextData.csv"
 lines_to_read = -1
 
-delta_comments_file = open("delta_comments.csv",mode='w', encoding="utf-8")
-nodelta_comments_file = open("nodelta_comments.csv", mode='w', encoding="utf-8")
+delta_comments_file = open("/home/shared/CMV/delta_comments.csv",mode='w', encoding="utf-8")
+nodelta_comments_file = open("/home/shared/CMV/nodelta_comments.csv", mode='w', encoding="utf-8")
 
 delta_writer = csv.writer(delta_comments_file, dialect='excel', delimiter=',')
 nodelta_writer = csv.writer(nodelta_comments_file, dialect='excel', delimiter=',')

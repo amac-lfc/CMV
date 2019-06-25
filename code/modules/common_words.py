@@ -4,10 +4,10 @@ from lib import *
 import csv
 
 lines_to_read = 800000
-input_file = "../../CSVs/TextData.csv"
+input_file = "/home/shared/CMV/TextData.csv"
 
 # no_delta_words_file = open("../no_delta_words.txt", mode='w', encoding="utf-8")
-delta_words_file = open("../../delta_words.txt", mode='w', encoding="utf-8")
+delta_words_file = open("/home/shared/CMV/delta_words.txt", mode='w', encoding="utf-8")
 
 # no_delta_text = ""
 delta_text = ""

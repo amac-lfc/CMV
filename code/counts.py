@@ -2,7 +2,7 @@ import csv
 
 comments_metadata_dict = {}
 
-input_file = "../Slimmed_Comments_MetaData.csv"
+input_file = "/home/shared/CMV/Slimmed_Comments_MetaData.csv"
 lines_to_read = -1
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     csv_reader = csv.DictReader(csv_file)
@@ -25,7 +25,7 @@ with open(input_file, mode='r', encoding="utf-8") as csv_file:
 print("Done with Comment MetaData")
 
 link_author_dict = {}
-input_file = "../Slimmed_Submissions_MetaData.csv"
+input_file = "/home/shared/CMV/Slimmed_Submissions_MetaData.csv"
 lines_to_read = -1
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     csv_reader = csv.DictReader(csv_file)
@@ -43,7 +43,7 @@ print("Done with Submission MetaData")
 lost_child_count = 0
 justified_comments_awarded_deltas = []
 unjustified_comments_awarded_deltas = []
-input_file = "../Slimmed_Comments_TextData.csv"
+input_file = "/home/shared/CMV/Slimmed_Comments_TextData.csv"
 lines_to_read = -1
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     csv_reader = csv.DictReader(csv_file)
@@ -73,9 +73,9 @@ print("Done Finding Deltas")
 print(len(justified_comments_awarded_deltas))
 print(len(unjustified_comments_awarded_deltas))
 
-with open('good_deltas.txt', 'w') as f:
+with open('/home/shared/CMV/good_deltas.txt', 'w') as f:
     for item in justified_comments_awarded_deltas:
         f.write("%s\n" % item)
-with open('bad_deltas.txt', 'w') as f:
+with open('/home/shared/CMV/bad_deltas.txt', 'w') as f:
     for item in unjustified_comments_awarded_deltas:
         f.write("%s\n" % item)

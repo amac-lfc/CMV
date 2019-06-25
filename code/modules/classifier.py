@@ -72,11 +72,11 @@ def readInputFile(input_file, lines_to_read):
     return data
 
 print("Loading Common Words and Creating Features List")
-common_words = open(r"../../delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
+common_words = open(r"/home/shared/CMV/delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count'] + common_words
 
 print('Reading File and Creating Data')
-data = readInputFile("../../CSVs/true_data.csv",1000000)
+data = readInputFile("/home/shared/CMV/true_data.csv",1000000)
 
 print("Randomizing and Evening Out Data")
 fixed_data = evenOutData(data, 5000)

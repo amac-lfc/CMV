@@ -3,7 +3,7 @@ sys.path.append('modules/')
 from lib import *
 import csv
 
-common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
+common_words = open(r"/home/shared/CMV/delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 
 lines_to_read = -1
 NumWords = 200
@@ -11,8 +11,8 @@ NumWords = 200
 def data_to_csv(output_file, input_file, lines_to_read, NumWords):
     file = open(output_file, mode='w', encoding="utf-8")
     writer = csv.writer(file, dialect='excel', delimiter=',')
-    header = ['author', 'parend_id', 'id',  'certainty_count', 'extremity_count', 
-                'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count', 'questions_count', 
+    header = ['author', 'parend_id', 'id',  'certainty_count', 'extremity_count',
+                'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count', 'questions_count',
                 'bold_count', 'avgSentences_count', 'enumeration']
 
     #first writer header row
@@ -47,8 +47,8 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
 
             #column order: (author, parent_id, id, Delta_Awarded, certainty_count, extremity_count,
             #lexical_diversity_rounded, char_count_rounded, link_count, quote_count)
-            writer.writerow([row['author'], row['parend_id'], row['id'], certainty_count, extremity_count, 
-                            lexical_diversity_rounded, char_count_rounded, link_count, quote_count, questions_count, 
+            writer.writerow([row['author'], row['parend_id'], row['id'], certainty_count, extremity_count,
+                            lexical_diversity_rounded, char_count_rounded, link_count, quote_count, questions_count,
                             bold_count, avgSentences_count, enumeration_count] + lst)
 
             line_count += 1
@@ -58,5 +58,5 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
     file.close()
 
 
-data_to_csv("Delta_Data.csv", "./delta_comments.csv", lines_to_read, NumWords)
-data_to_csv("NoDelta_Data.csv", "./nodelta_comments.csv", lines_to_read, NumWords)
+data_to_csv("/home/shared/CMV/Delta_Data.csv", "/home/shared/CMV/delta_comments.csv", lines_to_read, NumWords)
+data_to_csv("/home/shared/CMV/NoDelta_Data.csv", "/home/shared/CMV/nodelta_comments.csv", lines_to_read, NumWords)
