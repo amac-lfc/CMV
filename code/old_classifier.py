@@ -1,16 +1,15 @@
 print("Importing Modules...")
 
-import pandas as pd
-# import csv
-import numpy as np
-from random import shuffle
+import csv
 from lib import *
+from random import shuffle
+import numpy as np
 from sklearn import tree
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
-import random as rd
+
 
 def grab(value,data):
     grabbed_data = []
@@ -27,83 +26,57 @@ def separateData(data):
         labels.append(y)
     return features, labels
 
+def readInputFile(input_file, delta, lines_to_read):
+    data = []
+    with open(input_file, mode='r', encoding='utf-8') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        line_count = 0
+
+        for row in csv_reader:
+            common_word_counts = []
+            for word in common_words:
+                # print(word)
+                common_word_counts.append(row[word])
+
+            feature = [row['certainty_count'], row['extremity_count'], row['lexical_diversity_rounded'],
+                       row['char_count_rounded'], row['link_count'], row['quote_count'], row['questions_count'],
+                       row['bold_count'], row['avgSentences_count'], row['enumeration']] + common_word_counts
+
+            data.append([feature, delta])
+            line_count += 1
+            if (line_count >= lines_to_read) and (lines_to_read>0):
+                  break;
+
+    print(f'Processed {line_count} lines.')
+    return data
+
 print("Loading Common Words and Creating Features List")
-# common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
-# common_words = common_words[:NumWords]
+NumWords = 200
+common_words = open(r"/home/shared/CMV/delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
+common_words = common_words[:NumWords]
+print(common_words[-1])
 features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count',
-                'questions_count', 'bold_count', 'avgSentences_count', 'enumeration', 'excla'] #+ common_words
+                'questions_count', 'bold_count', 'avgSentences_count', 'enumeration'] + common_words
 
 print('Reading File and Creating Data')
-df = pd.read_csv('/home/shared/CMV/Delta_Data.csv', delimiter = ",")
-Deltas = df.values[:,3:]
-y_Deltas = np.ones(len(Deltas[:,0]),'i')
-Deltas = np.column_stack((Deltas,y_Deltas))
-# print(Deltas[:10])
-# df = pd.read_csv('NoDelta_Data.csv', delimiter = ",")
-# ds = df.sample(frac=0.005)
-ds = pd.read_csv('/home/shared/CMV/NoDelta_Data_Sample.csv', delimiter = ",")
-NoDeltas = ds.values[:,3:]
-y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
-NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))
-
-
-while Deltas.shape[0] < NoDeltas.shape[0]:
-    i = rd.randint(0,Deltas.shape[0]-1)
-    Deltas = np.concatenate((Deltas, Deltas[i,:][np.newaxis,:]), axis=0)
-
-fixed_data = np.concatenate((Deltas,NoDeltas), axis=0)
+Deltas = readInputFile("/home/shared/CMV/Delta_Data.csv",1,-1)
+NoDeltas = readInputFile("/home/shared/CMV/NoDelta_Data_Sample.csv",0,-1)
+fixed_data = Deltas+NoDeltas
 
 print("Randomizing and Evening Out Data")
-#shuffle(fixed_data)
-np.random.shuffle(fixed_data)
+shuffle(fixed_data)
 
 print("Splitting Data into Train and Test")
 train_data = fixed_data[:int(len(fixed_data) *.8)]
 test_data = fixed_data[int(len(fixed_data) * .8):]
-x_train = train_data[:,:-1]
-# x_train = x_train.astype('int')
-y_train = train_data[:,-1]
-y_train=y_train.astype('int')
-print(x_train.shape, y_train.shape)
-x_test = test_data[:,:-1]
-y_test = test_data[:,-1]
-y_test = y_test.astype('int')
-
-print("Deltas, NoDeltas = ", len(y_Deltas), len(y_NoDeltas))
-print("Deltas, NoDeltas = ", Deltas.shape, NoDeltas.shape)
-
+x_train, y_train = separateData(train_data)
 
 #This makes it so the test data only contains data with deltas
 #test_data = grab('1', test_data)
 
-
-
-# df = pd.read_csv('Delta_Data.csv', delimiter = ",")
-# Deltas = df.values[:,3:]
-# y_Deltas = np.ones(len(Deltas[:,0]),'i')
-# Deltas = np.column_stack((Deltas,y_Deltas))
-# df2 = pd.read_csv('NoDelta_Data.csv', delimiter = ",")
-# NoDeltas = df2.values[:,3:]
-# y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
-# NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))
-# test_data = NoDeltas#np.concatenate((Deltas,NoDeltas), axis=0)
-# np.random.shuffle(test_data)
-# test_data = test_data[:40000]
-# x_test = test_data[:,:-1]
-# y_test = test_data[:,-1]
-# y_test = y_test.astype('int')
-
-# delta_count = 0
-# nodelta_count = 0
-# for i in y_train:
-#     if i == 1:
-#         delta_count += 1
-#     else:
-#         nodelta_count += 1
-#     print(i,end="")
-# print()
-# print(delta_count,nodelta_count)
-
+x_test, y_test = separateData(test_data)
+x_test = [list(map(float,i)) for i in x_test]
+x_train = [list(map(float,i)) for i in x_train]
 
 print("Training Decision Tree, Naive Bayes Classifier, and Random Forest Classifier")
 #Creating the Classifiers
@@ -152,12 +125,9 @@ getImportances(clf_RF, x_train, features_list)
 print("Checking for Accuracy")
 # y_predict = clf_tree.predict(x_test)
 # print(f"Accuracy score for Decision Tree is: {accuracy_score(y_test, y_predict)}")
-#
+
 # y_predict = clf_MNB.predict(x_test)
 # print(f"Accuracy score for Naive Bayes Classifier is: {accuracy_score(y_test, y_predict)}")
 
 y_predict = clf_RF.predict(x_test)
 print(f"Accuracy score for Random Forest Classifier is: {accuracy_score(y_test, y_predict)}")
-ndeltas = np.where(y_test == 1)[0]
-ndeltas2 = np.where(y_test == 0)[0]
-print(len(ndeltas2), len(ndeltas),len(y_test),len(ndeltas)/len(y_test)*100)

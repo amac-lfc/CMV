@@ -3,7 +3,7 @@ sys.path.append('modules/')
 from lib import *
 import csv
 
-common_words = open(r"/home/shared/CMV/delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
+# common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 
 lines_to_read = -1
 NumWords = 200
@@ -13,10 +13,10 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
     writer = csv.writer(file, dialect='excel', delimiter=',')
     header = ['author', 'parend_id', 'id',  'certainty_count', 'extremity_count',
                 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count', 'questions_count',
-                'bold_count', 'avgSentences_count', 'enumeration']
+                'bold_count', 'avgSentences_count', 'enumeration_count', 'excla_count']
 
     #first writer header row
-    writer.writerow(header + common_words[:NumWords])
+    writer.writerow(header)
 
     with open(input_file, mode='r', encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -39,17 +39,18 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
             bold_count = getNumBold(body)
             avgSentences_count = getNumAvgSentences(body)
             enumeration_count = getNumEnumeration(body)
+            excla_count = getNumExcla(body)
 
-            lst = []
-            for word in common_words[:NumWords]:
-                lst.append(body.count(word))
+            # lst = []
+            # for word in common_words[:NumWords]:
+            #     lst.append(body.count(word))
 
 
             #column order: (author, parent_id, id, Delta_Awarded, certainty_count, extremity_count,
             #lexical_diversity_rounded, char_count_rounded, link_count, quote_count)
             writer.writerow([row['author'], row['parend_id'], row['id'], certainty_count, extremity_count,
                             lexical_diversity_rounded, char_count_rounded, link_count, quote_count, questions_count,
-                            bold_count, avgSentences_count, enumeration_count] + lst)
+                            bold_count, avgSentences_count, enumeration_count, excla_count])
 
             line_count += 1
             if (line_count >= lines_to_read) and (lines_to_read>0):
