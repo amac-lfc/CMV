@@ -12,10 +12,10 @@ import matplotlib.pyplot as plt
 #optimize the loops so you only need to run through the text once
 
 # these are the words of certainty
-wOC = [ 'absolutely', 'always', 'certain', 'certainly', 'clear', 'clearly', 'commit', 'committed', 'complete', 'completed', 
+wOC = [ 'absolutely', 'always', 'certain', 'certainly', 'clear', 'clearly', 'commit', 'committed', 'complete', 'completed',
         'completely', 'every', 'exact', 'exactly', 'extremist', 'extreme', 'extremely', 'forever', 'indeed', 'inevitable',
-        'inevitably', 'must', 'never', 'perfect', 'perfectly', 'perfection', 'perfected', 'positive', 'positivity', 
-        'positivley', 'precise', 'precisely', 'precision', 'totally', 'truly',' undeniably', 'undeniable', 'undoubtedly', 
+        'inevitably', 'must', 'never', 'perfect', 'perfectly', 'perfection', 'perfected', 'positive', 'positivity',
+        'positivley', 'precise', 'precisely', 'precision', 'totally', 'truly',' undeniably', 'undeniable', 'undoubtedly',
         'undoubted', 'unquestioned', 'unquestionably', 'unquestionable', 'unquestioning']
 
 # this is a function that counts the number of words of certainty
@@ -23,20 +23,20 @@ getCertaintyCount = lambda text,word_i=0: text.count(wOC[word_i]) if word_i == l
 
 # initial words of extremity
 eWC = ["much", "more", "extremely", "very",
-'multiple', 'many', 'extremely', 'extremeness', 'extremely', 'verier', 
-'veriest', 'wonderfully', 'wonderful', 'wonderfulness', "she detested him," 
-"very serious," 'seriously', 'seriousness', "very effective," 'effectively', 'effectiveness', 
-'dramatic', 'dramtically', 'increases', 'increasing', 'increased', 'increasing', 'great', 'greater', 'greatest', 
-'greatly', 'exaggerate', 'exaggerated', "strongly support," 'strong', 'stronger', 'strongest', 'strongly',  "extremely certain," 
+'multiple', 'many', 'extremely', 'extremeness', 'extremely', 'verier',
+'veriest', 'wonderfully', 'wonderful', 'wonderfulness', "she detested him,"
+"very serious," 'seriously', 'seriousness', "very effective," 'effectively', 'effectiveness',
+'dramatic', 'dramtically', 'increases', 'increasing', 'increased', 'increasing', 'great', 'greater', 'greatest',
+'greatly', 'exaggerate', 'exaggerated', "strongly support," 'strong', 'stronger', 'strongest', 'strongly',  "extremely certain,"
 'certain', 'certainly', 'extremist', 'extreme', 'extremely', 'amazing', 'amazes', 'amazingly', 'amazed', 'amaze']
 
 # this function counts the total of
 getExtremityCount = lambda text,word_i=0: text.count(eWC[word_i]) if word_i == len(eWC) - 1 else text.count(eWC[word_i]) + getExtremityCount(text, word_i+1)
 
 # words of intensity
-# iWC = ["best of all," 'best', 'bestest', 'favorite', 'favorable', 'intense', 'intensified', 'intensely', 'excel', 
+# iWC = ["best of all," 'best', 'bestest', 'favorite', 'favorable', 'intense', 'intensified', 'intensely', 'excel',
 #         'excelled', 'excellent', 'wonderful', 'wonderfulness',"strongly like," 'strong', 'stronger', 'strongest', "mighty fine", "especially good",
-#          "mighty favorable," 'enjoy', 'enjoyed', 'enjoyable', 'enjoyment', 
+#          "mighty favorable," 'enjoy', 'enjoyed', 'enjoyable', 'enjoyment',
 
 # words of low intensity      
 # liWC = ['preferred', 'prefferable', 'better', 'good', "fairly well", "moderately", 'slighly']

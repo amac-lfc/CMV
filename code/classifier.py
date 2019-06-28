@@ -46,30 +46,54 @@ NoDeltas = ds.values[:,3:]
 y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
 NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))
 
+print("Shuffling Data")
+np.random.shuffle(Deltas)
+np.random.shuffle(NoDeltas)
 
-while Deltas.shape[0] < NoDeltas.shape[0]:
-    i = rd.randint(0,Deltas.shape[0]-1)
-    Deltas = np.concatenate((Deltas, Deltas[i,:][np.newaxis,:]), axis=0)
 
-fixed_data = np.concatenate((Deltas,NoDeltas), axis=0)
 
-print("Randomizing and Evening Out Data")
-#shuffle(fixed_data)
-np.random.shuffle(fixed_data)
+trainDeltas, testDeltas = Deltas[:int(len(Deltas) * .8),:], Deltas[int(len(Deltas) * .8):,:]
+trainNoDeltas, testNoDeltas = NoDeltas[:int(len(NoDeltas) * .8),:], NoDeltas[int(len(NoDeltas) * .8):,:]
 
-print("Splitting Data into Train and Test")
-train_data = fixed_data[:int(len(fixed_data) *.8)]
-test_data = fixed_data[int(len(fixed_data) * .8):]
+print("Duplicating Deltas")
+
+while trainDeltas.shape[0] < trainNoDeltas.shape[0]:
+    i = rd.randint(0,trainDeltas.shape[0]-1)
+    trainDeltas = np.concatenate((trainDeltas, trainDeltas[i,:][np.newaxis,:]), axis=0)
+
+
+train_data = np.concatenate((trainDeltas,trainNoDeltas), axis=0)
+test_data = np.concatenate((testDeltas,testNoDeltas), axis=0)
+
+print("# of train: ", len(train_data))
+print("# of test: ", len(test_data))
+
+print("Splitting Test Data into Deltas and No Deltas")
+#train_data = fixed_data[:int(len(fixed_data) *.8)]
+#test_data = fixed_data[int(len(fixed_data) * .8):]
+
+
 x_train = train_data[:,:-1]
-# x_train = x_train.astype('int')
 y_train = train_data[:,-1]
-y_train=y_train.astype('int')
-print(x_train.shape, y_train.shape)
-x_test = test_data[:,:-1]
-y_test = test_data[:,-1]
-y_test = y_test.astype('int')
+y_train = y_train.astype('int')
 
-print("Deltas, NoDeltas = ", len(y_Deltas), len(y_NoDeltas))
+print("X Train, Y Train: ", x_train.shape, y_train.shape)
+
+x_testDeltas = testDeltas[:,:-1]
+y_testDeltas = testDeltas[:,-1]
+y_testDeltas = y_testDeltas.astype('int')
+
+x_testNoDeltas = testNoDeltas[:,:-1]
+y_testNoDeltas = testNoDeltas[:,-1]
+y_testNoDeltas = y_testNoDeltas.astype('int')
+
+# x_test = test_data[:,:-1]
+# y_test = test_data[:,-1]
+# y_test = y_test.astype('int')
+
+#print("x_test, y_test: ", x_test.shape, y_test.shape)
+
+print("Deltas, NoDeltas = ", len(y_testDeltas), len(y_testNoDeltas))
 print("Deltas, NoDeltas = ", Deltas.shape, NoDeltas.shape)
 
 
@@ -156,8 +180,15 @@ print("Checking for Accuracy")
 # y_predict = clf_MNB.predict(x_test)
 # print(f"Accuracy score for Naive Bayes Classifier is: {accuracy_score(y_test, y_predict)}")
 
-y_predict = clf_RF.predict(x_test)
-print(f"Accuracy score for Random Forest Classifier is: {accuracy_score(y_test, y_predict)}")
-ndeltas = np.where(y_test == 1)[0]
-ndeltas2 = np.where(y_test == 0)[0]
-print(len(ndeltas2), len(ndeltas),len(y_test),len(ndeltas)/len(y_test)*100)
+
+
+
+y_predictNoDeltas = clf_RF.predict(x_testNoDeltas)
+y_predictDeltas= clf_RF.predict(x_testDeltas)
+
+print(f"Accuracy score for Random Forest Classifier Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
+print(f"Accuracy score for Random Forest Classifier No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+
+# ndeltas = np.where(y_test == 1)[0]
+# ndeltas2 = np.where(y_test == 0)[0]
+# print(len(ndeltas2), len(ndeltas),len(y_test),len(ndeltas)/len(y_test)*100)
