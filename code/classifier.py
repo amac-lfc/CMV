@@ -30,7 +30,7 @@ def separateData(data):
 print("Loading Common Words and Creating Features List")
 # common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 # common_words = common_words[:NumWords]
-features_list = ['certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count',
+features_list = ['reply_count','certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count',
                 'questions_count', 'bold_count', 'avgSentences_count', 'enumeration', 'excla'] #+ common_words
 
 print('Reading File and Creating Data')
@@ -61,6 +61,9 @@ while trainDeltas.shape[0] < trainNoDeltas.shape[0]:
     i = rd.randint(0,trainDeltas.shape[0]-1)
     trainDeltas = np.concatenate((trainDeltas, trainDeltas[i,:][np.newaxis,:]), axis=0)
 
+while trainDeltas.shape[0] > trainNoDeltas.shape[0]:
+    i = rd.randint(0,trainNoDeltas.shape[0]-1)
+    trainNoDeltas = np.concatenate((trainNoDeltas, trainNoDeltas[i,:][np.newaxis,:]), axis=0)
 
 train_data = np.concatenate((trainDeltas,trainNoDeltas), axis=0)
 test_data = np.concatenate((testDeltas,testNoDeltas), axis=0)

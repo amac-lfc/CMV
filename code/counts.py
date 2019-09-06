@@ -3,7 +3,7 @@ import csv
 comments_metadata_dict = {}
 
 input_file = "/home/shared/CMV/Slimmed_Comments_MetaData.csv"
-lines_to_read = -1
+lines_to_read = 10000
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     csv_reader = csv.DictReader(csv_file)
     line_count = 0
@@ -26,7 +26,7 @@ print("Done with Comment MetaData")
 
 link_author_dict = {}
 input_file = "/home/shared/CMV/Slimmed_Submissions_MetaData.csv"
-lines_to_read = -1
+lines_to_read = 10000
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     csv_reader = csv.DictReader(csv_file)
     line_count = 0
@@ -44,7 +44,7 @@ lost_child_count = 0
 justified_comments_awarded_deltas = []
 unjustified_comments_awarded_deltas = []
 input_file = "/home/shared/CMV/Slimmed_Comments_TextData.csv"
-lines_to_read = -1
+lines_to_read = 10000
 with open(input_file, mode='r', encoding="utf-8") as csv_file:
     csv_reader = csv.DictReader(csv_file)
     line_count = 0

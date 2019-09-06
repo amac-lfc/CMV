@@ -3,7 +3,8 @@
 from lib import *
 import csv
 
-lines_to_read = -1
+num_of_words = 500
+lines_to_read = 10000
 input_file = "/home/shared/CMV/delta_comments.csv"
 
 # no_delta_words_file = open("../no_delta_words.txt", mode='w', encoding="utf-8")
@@ -38,7 +39,7 @@ delta_text = cleanText(delta_text)
 #no_delta_text = cleanText(no_delta_text)
 
 print("Organizing Most Common Words")
-common_words = getCommonWords(500,delta_text)
+common_words = getCommonWords(num_of_words,delta_text)
 
 print(common_words)
 print("Writing to Text File")

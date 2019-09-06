@@ -1,5 +1,16 @@
 # CMV
 
+##How to run code
+1. Run FilerData.py
+2. Run counts.py
+3. Run separateData.py
+4. Run common_words.py
+5. Run main.py
+6. Run shufflecsv.py
+7. Run classifier.py
+
+
+
 ## The Data
 The DATA is from [Changed My View](https://www.reddit.com/r/changemyview/) and can be downloaded on [Data_CMV](https://www.dropbox.com/sh/e7u90jw3zwqdkit/AADqa3YjfP8a6cTxt-NyqHc9a?dl=0)
 
