@@ -6,7 +6,7 @@ import csv
 
 # common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 
-lines_to_read = 10000
+lines_to_read = -1
 NumWords = 200
 
 def data_to_csv(output_file, input_file, lines_to_read, NumWords):
@@ -26,17 +26,17 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
     reply_counts_dct = {}
     for line in reply_counts_file:
         lst = line.split(" ")
-        reply_counts_dct[lst[0].split("_")[1]] = lst[1]
-    print(reply_counts_dct)
+        if lst[0] != "":
+            reply_counts_dct[lst[0].split("_")[1]] = lst[1]
 
     print("Loading nested counts...")
     nested_counts_file = open("/home/shared/CMV/nested_counts.txt", "r").read().splitlines()
 
     nested_counts_dct = {}
     for line in nested_counts_file:
-        lst = line.split(" ")
-        nested_counts_dct[lst[0].split("_")[1]] = lst[1]
-    print(nested_counts_dct)
+        lst = line.split(" ")[:-1]
+        if (len(lst) == 2):
+            nested_counts_dct[lst[0].split("_")[1]] = lst[1]
 
 
     with open(input_file, mode='r', encoding="utf-8") as csv_file:
@@ -60,7 +60,6 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
                 nested_count = nested_counts_dct[row["id"]]
             else:
                 nested_count = 0
-
 
             certainty_count = getCertaintyCount(body)
             extremity_count = getExtremityCount(body)

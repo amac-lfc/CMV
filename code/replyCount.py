@@ -1,6 +1,6 @@
 import csv
 
-lines_to_read = 10000
+lines_to_read = -1
 comments_metadata_file = "/home/shared/CMV/Slimmed_Comments_MetaData.csv"
 comment_dct = {}
 
@@ -42,7 +42,6 @@ with open(submissions_metadata_file, mode='r', encoding="utf-8") as csv_file:
         if (line_count >= lines_to_read) and (lines_to_read>0):
               break;
 
-print(comment_dct)
 
 
 
