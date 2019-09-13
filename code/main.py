@@ -12,7 +12,7 @@ NumWords = 200
 def data_to_csv(output_file, input_file, lines_to_read, NumWords):
     file = open(output_file, mode='w', encoding="utf-8")
     writer = csv.writer(file, dialect='excel', delimiter=',')
-    header = ['author', 'parend_id', 'id', 'reply_count',
+    header = ['author', 'parend_id', 'id', 'nested_count', 'reply_count',
                 'certainty_count', 'extremity_count',
                 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count', 'questions_count',
                 'bold_count', 'avgSentences_count', 'enumeration_count', 'excla_count']
@@ -28,6 +28,16 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
         lst = line.split(" ")
         reply_counts_dct[lst[0].split("_")[1]] = lst[1]
     print(reply_counts_dct)
+
+    print("Loading nested counts...")
+    nested_counts_file = open("/home/shared/CMV/nested_counts.txt", "r").read().splitlines()
+
+    nested_counts_dct = {}
+    for line in nested_counts_file:
+        lst = line.split(" ")
+        nested_counts_dct[lst[0].split("_")[1]] = lst[1]
+    print(nested_counts_dct)
+
 
     with open(input_file, mode='r', encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -45,6 +55,13 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
                 reply_count = reply_counts_dct[row["id"]]
             else:
                 reply_count = 0
+
+            if row["id"] in nested_counts_dct.keys():
+                nested_count = nested_counts_dct[row["id"]]
+            else:
+                nested_count = 0
+
+
             certainty_count = getCertaintyCount(body)
             extremity_count = getExtremityCount(body)
             lexical_diversity = getLexicalDiversity(body)
@@ -65,7 +82,7 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
 
             #column order: (author, parent_id, id, Delta_Awarded, certainty_count, extremity_count,
             #lexical_diversity_rounded, char_count_rounded, link_count, quote_count)
-            writer.writerow([row['author'], row['parend_id'], row['id'], reply_count,
+            writer.writerow([row['author'], row['parend_id'], row['id'], nested_count, reply_count,
                             certainty_count, extremity_count,
                             lexical_diversity_rounded, char_count_rounded, link_count, quote_count, questions_count,
                             bold_count, avgSentences_count, enumeration_count, excla_count])
