@@ -197,7 +197,7 @@ y_test = np.concatenate([y_testDeltas,y_testNoDeltas])
 y_pred = np.concatenate([y_predictDeltas,y_predictNoDeltas])
 
 
-plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
+# plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
 plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix', normalize=True)
 
 

@@ -70,6 +70,7 @@ def plotConfusionMatrix(y_true, y_pred,
                     ha="center", va="center",
                     color="white" if cm[i, j] > thresh else "black")
     fig.tight_layout()
+    fig.savefig('temp.png')
     plt.show()
     return ax
 
