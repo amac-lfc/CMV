@@ -3,6 +3,7 @@ print("Importing Modules...")
 import pandas as pd
 # import csv
 import numpy as np
+from confusionMatrix import *
 from random import shuffle
 from lib import *
 from sklearn import tree
@@ -187,10 +188,18 @@ print("Checking for Accuracy")
 
 
 y_predictNoDeltas = clf_RF.predict(x_testNoDeltas)
-y_predictDeltas= clf_RF.predict(x_testDeltas)
+y_predictDeltas = clf_RF.predict(x_testDeltas)
 
 print(f"Accuracy score for Random Forest Classifier Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
 print(f"Accuracy score for Random Forest Classifier No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+
+y_test = np.concatenate([y_testDeltas,y_testNoDeltas])
+y_pred = np.concatenate([y_predictDeltas,y_predictNoDeltas])
+
+
+plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
+plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix', normalize=True)
+
 
 # ndeltas = np.where(y_test == 1)[0]
 # ndeltas2 = np.where(y_test == 0)[0]
