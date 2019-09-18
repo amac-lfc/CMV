@@ -1,5 +1,6 @@
 print("Importing Modules...")
 
+from imblearn.over_sampling import SMOTE
 import pandas as pd
 # import csv
 import numpy as np
@@ -47,6 +48,8 @@ NoDeltas = ds.values[:,3:]
 y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
 NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))
 
+
+
 print("Shuffling Data")
 np.random.shuffle(Deltas)
 np.random.shuffle(NoDeltas)
@@ -55,6 +58,9 @@ np.random.shuffle(NoDeltas)
 
 trainDeltas, testDeltas = Deltas[:int(len(Deltas) * .8),:], Deltas[int(len(Deltas) * .8):,:]
 trainNoDeltas, testNoDeltas = NoDeltas[:int(len(NoDeltas) * .8),:], NoDeltas[int(len(NoDeltas) * .8):,:]
+
+train_data_sm = np.concatenate((trainDeltas,trainNoDeltas), axis=0)
+test_data_sm = np.concatenate((testDeltas,testNoDeltas), axis=0)
 
 print("Duplicating Deltas")
 
@@ -81,7 +87,13 @@ x_train = train_data[:,:-1]
 y_train = train_data[:,-1]
 y_train = y_train.astype('int')
 
+x_train_sm = train_data_sm[:,:-1]
+y_train_sm = train_data_sm[:,-1]
+y_train_sm = y_train_sm.astype('int')
+
 print("X Train, Y Train: ", x_train.shape, y_train.shape)
+print("X Train SM, Y Train SM: ", x_train_sm.shape, y_train_sm.shape)
+
 
 x_testDeltas = testDeltas[:,:-1]
 y_testDeltas = testDeltas[:,-1]
@@ -100,6 +112,11 @@ y_testNoDeltas = y_testNoDeltas.astype('int')
 print("Deltas, NoDeltas = ", len(y_testDeltas), len(y_testNoDeltas))
 print("Deltas, NoDeltas = ", Deltas.shape, NoDeltas.shape)
 
+sm = SMOTE()
+x_res, y_res = sm.fit_resample(x_train_sm, y_train_sm)
+
+
+print("SM Deltas, SM NoDeltas = ", len(np.where(y_res == 1)[0]), len(np.where(y_res == 0)[0]))
 
 #This makes it so the test data only contains data with deltas
 #test_data = grab('1', test_data)
@@ -142,6 +159,13 @@ clf_RF = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='en
             min_weight_fraction_leaf=0.0, n_estimators=1000, n_jobs=None,
             oob_score=False, random_state=0, verbose=0, warm_start=False)
 
+clf_RF_SM = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+            max_depth=80, max_features=3, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=3, min_samples_split=12,
+            min_weight_fraction_leaf=0.0, n_estimators=1000, n_jobs=None,
+            oob_score=False, random_state=0, verbose=0, warm_start=False)
+
 # param_grid = {
 #     'bootstrap': [True],
 #     'max_depth': [80, 90, 100, 110],
@@ -168,8 +192,15 @@ clf_RF = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='en
 # clf_MNB = MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
 
 #Training the Classifiers
-x_train = np.asarray(x_train)
-clf_RF = clf_RF.fit(x_train,y_train)
+
+#Training without SMOTE
+# x_train = np.asarray(x_train)
+# clf_RF = clf_RF.fit(x_train,y_train)
+
+#Training with SMOTE
+clf_RF = clf_RF.fit(x_res,y_res)
+
+
 # clf_tree = clf_tree.fit(x_train,y_train)
 # clf_MNB = clf_MNB.fit(x_train,y_train)
 
@@ -185,8 +216,6 @@ print("Checking for Accuracy")
 # print(f"Accuracy score for Naive Bayes Classifier is: {accuracy_score(y_test, y_predict)}")
 
 
-
-
 y_predictNoDeltas = clf_RF.predict(x_testNoDeltas)
 y_predictDeltas = clf_RF.predict(x_testDeltas)
 
@@ -195,7 +224,6 @@ print(f"Accuracy score for Random Forest Classifier No Delta is: {accuracy_score
 
 y_test = np.concatenate([y_testDeltas,y_testNoDeltas])
 y_pred = np.concatenate([y_predictDeltas,y_predictNoDeltas])
-
 
 # plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
 plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix', normalize=True)
