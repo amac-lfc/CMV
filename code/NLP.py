@@ -7,21 +7,27 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import warnings
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
+import matplotlib.pyplot as plt
+import numpy as np
 
 
+nltk.download('stopwords')
+nltk.download('wordnet')
 
-delta_data = pd.read_csv("/home/shared/CMV/delta_comments.csv", nrows=1000)
-nodelta_data = pd.read_csv("/home/shared/CMV/nodelta_comments.csv", nrows=1000)
+delta_data = pd.read_csv("/home/shared/CMV/delta_comments.csv", nrows=200)
+nodelta_data = pd.read_csv("/home/shared/CMV/nodelta_comments.csv", nrows=200)
 
 delta_data = delta_data[["body"]]
 nodelta_data = nodelta_data[["body"]]
 
-delta_data["delta_awarded"] = 1
-nodelta_data["delta_awarded"] = 0
+delta_data["label"] = 'ham'
+nodelta_data["label"] = 'spam'
 
 data = delta_data.append(nodelta_data, ignore_index=True).sample(frac=1)
 
-df.rename(columns={"body": "body_text", "delta_awarded": "label"})
+data = data.rename(columns={"body": "body_text"})
+
+print(data.head())
 
 print("Input data has {} rows and {} columns".format(len(data), len(data.columns)))
 
@@ -103,13 +109,21 @@ pd.set_option('display.max_colwidth', 100) # To extend column width
 stopwords = nltk.corpus.stopwords.words('english')
 ps = nltk.PorterStemmer()
 
-data = pd.read_csv("SMSSpamCollection.tsv", sep='\t')
-data.columns = ['label', 'body_text']
+# delta_data = pd.read_csv("/home/shared/CMV/delta_comments.csv", nrows=1000)
+# nodelta_data = pd.read_csv("/home/shared/CMV/nodelta_comments.csv", nrows=1000)
+#
+# delta_data = delta_data[["body"]]
+# nodelta_data = nodelta_data[["body"]]
+#
+# delta_data["label"] = 'ham'
+# nodelta_data["label"] = 'spam'
+#
+# data = delta_data.append(nodelta_data, ignore_index=True).sample(frac=1)
+#
+# data = data.rename(columns={"body": "body_text"})
 
 
 # ###  Function to remove punctuation, tokenize, remove stopwords, and stem
-
-# In[16]:
 
 
 def clean_text(text):
@@ -161,15 +175,23 @@ X_tfidf_df.head(10)
 print(X_tfidf_df.loc[(X_tfidf_df!=0).any(axis=1)])
 
 
-
-data = pd.read_csv("SMSSpamCollection.tsv", sep='\t')
-data.columns = ['label', 'body_text']
-
-
+# delta_data = pd.read_csv("/home/shared/CMV/delta_comments.csv", nrows=1000)
+# nodelta_data = pd.read_csv("/home/shared/CMV/nodelta_comments.csv", nrows=1000)
+#
+# delta_data = delta_data[["body"]]
+# nodelta_data = nodelta_data[["body"]]
+#
+# delta_data["label"] = 'ham'
+# nodelta_data["label"] = 'spam'
+#
+# data = delta_data.append(nodelta_data, ignore_index=True).sample(frac=1)
+#
+# data = data.rename(columns={"body": "body_text"})
+#
 # Function to calculate length of message excluding space
 data['body_len'] = data['body_text'].apply(lambda x: len(x) - x.count(" "))
-
-data.head()
+#
+# data.head()
 
 def count_punct(text):
     count = sum([1 for char in text if char in string.punctuation])
@@ -178,14 +200,6 @@ def count_punct(text):
 data['punct%'] = data['body_text'].apply(lambda x: count_punct(x))
 
 data.head()
-
-
-import matplotlib.pyplot as plt
-import numpy as np
-get_ipython().run_line_magic('matplotlib', 'inline')
-
-
-
 
 bins = np.linspace(0, 200, 40)
 
@@ -231,8 +245,8 @@ param = {'n_estimators': [10, 150, 300],
 
 gs = GridSearchCV(rf, param, cv=5, n_jobs=-1)# n_jobs=-1 for parallelizing search
 gs_fit = gs.fit(X_count_feat, data['label'])
-pd.DataFrame(gs_fit.cv_results_).sort_values('mean_test_score', ascending=False).head()
 
+print(pd.DataFrame(gs_fit.cv_results_).sort_values('mean_test_score', ascending=False).head())
 
 rf = RandomForestClassifier()
 param = {'n_estimators': [10, 150, 300],
@@ -240,4 +254,5 @@ param = {'n_estimators': [10, 150, 300],
 
 gs = GridSearchCV(rf, param, cv=5, n_jobs=-1)# n_jobs=-1 for parallelizing search
 gs_fit = gs.fit(X_tfidf_feat, data['label'])
-pd.DataFrame(gs_fit.cv_results_).sort_values('mean_test_score', ascending=False).head()
+
+print(pd.DataFrame(gs_fit.cv_results_).sort_values('mean_test_score', ascending=False).head())
