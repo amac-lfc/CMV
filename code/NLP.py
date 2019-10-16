@@ -14,8 +14,8 @@ import numpy as np
 nltk.download('stopwords')
 nltk.download('wordnet')
 
-delta_data = pd.read_csv("/home/shared/CMV/delta_comments.csv", nrows=200)
-nodelta_data = pd.read_csv("/home/shared/CMV/nodelta_comments.csv", nrows=200)
+delta_data = pd.read_csv("/home/shared/CMV/delta_comments.csv", nrows=5000)
+nodelta_data = pd.read_csv("/home/shared/CMV/nodelta_comments.csv", nrows=5000)
 
 delta_data = delta_data[["body"]]
 nodelta_data = nodelta_data[["body"]]

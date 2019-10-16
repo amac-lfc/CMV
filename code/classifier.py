@@ -194,11 +194,11 @@ clf_RF_SM = RandomForestClassifier(bootstrap=True, class_weight=None, criterion=
 #Training the Classifiers
 
 #Training without SMOTE
-# x_train = np.asarray(x_train)
-# clf_RF = clf_RF.fit(x_train,y_train)
+x_train = np.asarray(x_train)
+clf_RF = clf_RF.fit(x_train,y_train)
 
 #Training with SMOTE
-clf_RF = clf_RF.fit(x_res,y_res)
+#clf_RF = clf_RF.fit(x_res,y_res)
 
 
 # clf_tree = clf_tree.fit(x_train,y_train)
