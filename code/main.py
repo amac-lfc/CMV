@@ -6,6 +6,23 @@ import csv
 
 # common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 
+#grab new words
+reader = csv.reader(open('../word_list.csv', 'r'))
+headers = next(reader, None)
+dct_keys = {0:'high arousal', 1:'low arousal', 2:'medium arousal', 3:'medium dominance', 4:'low dominance', 5:'high dominance', 6:'high valence', 7:'low valence', 8:'medium valence', 9:'examples', 10:'hedges', 11:'self references'}
+
+dct = {}
+for i in headers:
+    dct[i] = []
+# print(dct)
+
+for row in reader:
+   for i in range(len(row)):
+       if row[i] != "":
+           dct[dct_keys[i]].append(row[i])
+# print(dct)
+
+
 lines_to_read = -1
 NumWords = 200
 
@@ -60,6 +77,7 @@ def data_to_csv(output_file, input_file, lines_to_read, NumWords):
                 nested_count = nested_counts_dct[row["id"]]
             else:
                 nested_count = 0
+
 
             certainty_count = getCertaintyCount(body)
             extremity_count = getExtremityCount(body)

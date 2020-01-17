@@ -75,10 +75,9 @@ for id in comment_dct.keys():
     reply_count = 0
     comments = []
 
-    # print(comment_dct[start][2])
-
     while start != comment_dct[start][2] and comment_dct[start][0] in comment_dct.keys():
         author = comment_dct[start][1]
+
         if author == sub_author or author == com_author:
             reply_count += 1
             comments.append(start)
@@ -103,9 +102,6 @@ with open('../vivian_ta_cmv_data.csv', mode='r', encoding="utf-8") as csvinput:
 
         for row in reader:
             row.append(id_dct["t1_"+row[1]])
-            print(row[-1])
 
             all.append(row)
-
-
         writer.writerows(all)

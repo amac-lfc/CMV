@@ -38,7 +38,7 @@ getExtremityCount = lambda text,word_i=0: text.count(eWC[word_i]) if word_i == l
 #         'excelled', 'excellent', 'wonderful', 'wonderfulness',"strongly like," 'strong', 'stronger', 'strongest', "mighty fine", "especially good",
 #          "mighty favorable," 'enjoy', 'enjoyed', 'enjoyable', 'enjoyment',
 
-# words of low intensity      
+# words of low intensity
 # liWC = ['preferred', 'prefferable', 'better', 'good', "fairly well", "moderately", 'slighly']
 
 # here is the calculator for lexical diversity
