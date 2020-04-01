@@ -2,6 +2,9 @@ print("Importing Modules...")
 
 from imblearn.over_sampling import SMOTE
 import pandas as pd
+from sklearn.decomposition import PCA, IncrementalPCA
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import Perceptron
 # import csv
 import numpy as np
 from confusionMatrix import *
@@ -11,10 +14,12 @@ from sklearn import tree
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import AdaBoostClassifier
 from sklearn.model_selection import GridSearchCV
 import random as rd
+from sklearn.preprocessing import normalize
+from sklearn.datasets import load_iris
+from sklearn.decomposition import PCA, IncrementalPCA
+from mpl_toolkits.mplot3d import Axes3D
 
 def grab(value,data):
     grabbed_data = []
@@ -53,29 +58,27 @@ NoDeltas = ds.values[:,3:]
 y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
 NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))
 
-
-
 print("Shuffling Data")
 np.random.shuffle(Deltas)
 np.random.shuffle(NoDeltas)
 
-
-
 trainDeltas, testDeltas = Deltas[:int(len(Deltas) * .8),:], Deltas[int(len(Deltas) * .8):,:]
 trainNoDeltas, testNoDeltas = NoDeltas[:int(len(NoDeltas) * .8),:], NoDeltas[int(len(NoDeltas) * .8):,:]
+
+
 
 train_data_sm = np.concatenate((trainDeltas,trainNoDeltas), axis=0)
 test_data_sm = np.concatenate((testDeltas,testNoDeltas), axis=0)
 
 print("Duplicating Deltas")
 
-while trainDeltas.shape[0] < trainNoDeltas.shape[0]:
-    i = rd.randint(0,trainDeltas.shape[0]-1)
-    trainDeltas = np.concatenate((trainDeltas, trainDeltas[i,:][np.newaxis,:]), axis=0)
-
-while trainDeltas.shape[0] > trainNoDeltas.shape[0]:
-    i = rd.randint(0,trainNoDeltas.shape[0]-1)
-    trainNoDeltas = np.concatenate((trainNoDeltas, trainNoDeltas[i,:][np.newaxis,:]), axis=0)
+# while trainDeltas.shape[0] < trainNoDeltas.shape[0]:
+#     i = rd.randint(0,trainDeltas.shape[0]-1)
+#     trainDeltas = np.concatenate((trainDeltas, trainDeltas[i,:][np.newaxis,:]), axis=0)
+#
+# while trainDeltas.shape[0] > trainNoDeltas.shape[0]:
+#     i = rd.randint(0,trainNoDeltas.shape[0]-1)
+#     trainNoDeltas = np.concatenate((trainNoDeltas, trainNoDeltas[i,:][np.newaxis,:]), axis=0)
 
 train_data = np.concatenate((trainDeltas,trainNoDeltas), axis=0)
 test_data = np.concatenate((testDeltas,testNoDeltas), axis=0)
@@ -117,11 +120,11 @@ y_testNoDeltas = y_testNoDeltas.astype('int')
 print("Deltas, NoDeltas = ", len(y_testDeltas), len(y_testNoDeltas))
 print("Deltas, NoDeltas = ", Deltas.shape, NoDeltas.shape)
 
-sm = SMOTE()
-x_res, y_res = sm.fit_resample(x_train_sm, y_train_sm)
 
-
-print("SM Deltas, SM NoDeltas = ", len(np.where(y_res == 1)[0]), len(np.where(y_res == 0)[0]))
+x_train_sm = normalize(x_train_sm)
+x_train = normalize(x_train)
+x_testDeltas = normalize(x_testDeltas)
+x_testNoDeltas = normalize(x_testNoDeltas)
 
 #This makes it so the test data only contains data with deltas
 #test_data = grab('1', test_data)
@@ -155,93 +158,98 @@ print("SM Deltas, SM NoDeltas = ", len(np.where(y_res == 1)[0]), len(np.where(y_
 # print(delta_count,nodelta_count)
 
 
-print("Training Ada Boost and Gradient Boosting")
+print("Training Logistic Regression")
 #Creating the Classifiers
-clf_ada = AdaBoostClassifier(n_estimators=100, random_state=0)
-clf_gb = GradientBoostingClassifier(n_estimators=100, random_state=0)
 
-# param_grid = {
-#     'bootstrap': [True],
-#     'max_depth': [80, 90, 100, 110],
-#     'max_features': [2, 3],
-#     'min_samples_leaf': [3, 4, 5],
-#     'min_samples_split': [8, 10, 12],
-#     'n_estimators': [100, 200, 300, 1000]
-# }
-#
-# # Instantiate the grid search model
-# grid_search = GridSearchCV(estimator = clf_RF, param_grid = param_grid,
-#                           cv = 3, n_jobs = -1, verbose = 2)
-#
-# grid_search.fit(x_train, y_train)
-# print(grid_search.best_params_)
-# clf_RF = grid_search.best_estimator_
+# models = [["solver is liblinear", LogisticRegression(max_iter=10000, solver="liblinear", penalty="l1")],
+#         ["class weight is balanced", LogisticRegression(max_iter=10000, solver="lbfgs", class_weight="balanced")],
+#         ["c is 1",LogisticRegression(max_iter=10000, solver="lbfgs", C=1)],
+#         ["c is 10", LogisticRegression(max_iter=10000, solver="lbfgs", C=1e2)],
+#         ["c is 100", LogisticRegression(max_iter=10000, solver="lbfgs", C=1e3)],
+#         ["c is 1/10", LogisticRegression(max_iter=10000, solver="lbfgs", C=1e-1)],
+#         ["c is 1/100", LogisticRegression(max_iter=10000, solver="lbfgs", C=1e-2)]]
 
-# clf_tree = tree.DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
-#             max_features=None, max_leaf_nodes=None,
-#             min_impurity_decrease=0.0, min_impurity_split=None,
-#             min_samples_leaf=1, min_samples_split=2,
-#             min_weight_fraction_leaf=0.0, presort=False, random_state=None,
-#             splitter='best')
-# clf_MNB = MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
-
-#Training the Classifiers
+models = [["solver is liblinear, class weight is balanced, c is 1/10", LogisticRegression(max_iter=10000, solver="liblinear", penalty="l1", class_weight="balanced", C=1e-1)],
+["solver is lbfgs, class weight is balanced, c is 1/10", LogisticRegression(max_iter=10000, solver="lbfgs", class_weight="balanced", C=1e-1)]]
+# clf_P = Perceptron(tol=1e-6)
 
 #Training without SMOTE
 x_train = np.asarray(x_train)
-# clf_RF = clf_RF.fit(x_train,y_train)
-clf_ada = clf_ada.fit(x_res, y_res)
-clf_gb = clf_gb.fit(x_res, y_res)
+sm = SMOTE(k_neighbors = 2)
+x_res, y_res = sm.fit_resample(x_train, y_train)
+
+print(y_res)
+
+print("Delta count:", np.count_nonzero(y_res == 1))
+print("Nodelta count:", np.count_nonzero(y_res == 0))
+
+
+# print(x_res)
+
+for i in range(len(models)):
+    model = models[i][1].fit(x_res,y_res)
+
+    y_predictNoDeltas = model.predict(x_testNoDeltas)
+    y_predictDeltas = model.predict(x_testDeltas)
+
+    print(f"Accuracy score for {models[i][0]} Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
+    print(f"Accuracy score for {models[i][0]} No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+
 
 #Training with SMOTE
 #clf_RF = clf_RF.fit(x_res,y_res)
 
-
 # clf_tree = clf_tree.fit(x_train,y_train)
 # clf_MNB = clf_MNB.fit(x_train,y_train)
 
-
-
 # getImportances(clf_RF, x_train, features_list)
 
-print("Checking for Accuracy\n")
+# print("Checking for Accuracy")
 # y_predict = clf_tree.predict(x_test)
 # print(f"Accuracy score for Decision Tree is: {accuracy_score(y_test, y_predict)}")
-#
+
 # y_predict = clf_MNB.predict(x_test)
 # print(f"Accuracy score for Naive Bayes Classifier is: {accuracy_score(y_test, y_predict)}")
 
+# y_predict = clf_RF.predict(x_test)
+# print(f"Accuracy score for Random Forest Classifier is: {accuracy_score(y_test, y_predict)}")
 
-y_predictNoDeltas = clf_ada.predict(x_testNoDeltas)
-y_predictDeltas = clf_ada.predict(x_testDeltas)
 
-print(f"Accuracy score for Ada Classifier Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
-print(f"Accuracy score for Ada Classifier No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
 
-y_test = np.concatenate([y_testDeltas,y_testNoDeltas])
-y_pred = np.concatenate([y_predictDeltas,y_predictNoDeltas])
-
-# plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
-# print("Ada Boost Confusion Matrix")
+# y_predictNoDeltas = clf_LR.predict(x_testNoDeltas)
+# y_predictDeltas = clf_LR.predict(x_testDeltas)
 #
-plotConfusionMatrix(y_test, y_pred, title='Ada Boost', normalize=True)
-# print()
-
-
-
-y_predictNoDeltas = clf_gb.predict(x_testNoDeltas)
-y_predictDeltas = clf_gb.predict(x_testDeltas)
-
-print(f"Accuracy score for GB Classifier Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
-print(f"Accuracy score for GB Classifier No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+#
+#
+# print(f"Accuracy score for LogisticRegression Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
+# print(f"Accuracy score for LogisticRegression No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
 
 # y_test = np.concatenate([y_testDeltas,y_testNoDeltas])
 # y_pred = np.concatenate([y_predictDeltas,y_predictNoDeltas])
 #
 # # plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
-# # print("Gradient Boosting Confusion Matrix")
-# plotConfusionMatrix(y_test, y_pred, title='Gradient Boosting', normalize=True)
-# print()
+# plotConfusionMatrix(y_test, y_pred, title='Logistic Regression CM', normalize=True)
+#
+#
+# y_predictNoDeltas = clf_P.predict(x_testNoDeltas)
+# y_predictDeltas = clf_P.predict(x_testDeltas)
+#
+# print(f"Accuracy score for Perceptron Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
+# print(f"Accuracy score for Perceptron No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+
+
+# y_predictNoDeltas = clf_RF.predict(x_testNoDeltas)
+# y_predictDeltas = clf_RF.predict(x_testDeltas)
+
+# print(f"Accuracy score for Random Forest Classifier Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
+# print(f"Accuracy score for Random Forest Classifier No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+
+
+# y_test = np.concatenate([y_testDeltas,y_testNoDeltas])
+# y_pred = np.concatenate([y_predictDeltas,y_predictNoDeltas])
+
+# plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
+# plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix', normalize=True)
 
 
 # ndeltas = np.where(y_test == 1)[0]

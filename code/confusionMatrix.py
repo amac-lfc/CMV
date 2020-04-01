@@ -45,10 +45,11 @@ def plotConfusionMatrix(y_true, y_pred,
         print('Confusion matrix, without normalization')
 
     print(cm)
+    plt.rcParams.update({'font.size': 14})
 
     fig, ax = plt.subplots()
     im = ax.imshow(cm, interpolation='nearest', cmap=cmap)
-    ax.figure.colorbar(im, ax=ax)
+    # ax.figure.colorbar(im, ax=ax)
     # We want to show all ticks...
     ax.set(xticks=np.arange(cm.shape[1]),
            yticks=np.arange(cm.shape[0]),
@@ -70,7 +71,7 @@ def plotConfusionMatrix(y_true, y_pred,
                     ha="center", va="center",
                     color="white" if cm[i, j] > thresh else "black")
     fig.tight_layout()
-    fig.savefig('temp.png')
+    fig.savefig('temp.png', bbox_inches="tight", pad_inches=0)
     plt.show()
     return ax
 

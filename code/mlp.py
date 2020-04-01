@@ -11,10 +11,10 @@ from sklearn import tree
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import AdaBoostClassifier
 from sklearn.model_selection import GridSearchCV
 import random as rd
+from sklearn.neural_network import MLPClassifier
+
 
 def grab(value,data):
     grabbed_data = []
@@ -34,21 +34,18 @@ def separateData(data):
 print("Loading Common Words and Creating Features List")
 # common_words = open(r"delta_words.txt",mode='r',encoding="utf-8").read().split(" ")
 # common_words = common_words[:NumWords]
-features_list = ['author', 'parend_id', 'id', 'nested_count', 'reply_count',
-            'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count', 'questions_count',
-            'bold_count', 'avgSentences_count', 'enumeration_count', 'excla_count', 'high arousal', 'low arousal',
-            'medium arousal', 'medium dominance', 'low dominance', 'high dominance', 'high valence', 'low valence',
-            'medium valence', 'examples', 'hedges', 'self references']
+features_list = ['nested_count', 'reply_count','certainty_count', 'extremity_count', 'lexical_diversity_rounded', 'char_count_rounded', 'link_count', 'quote_count',
+                'questions_count', 'bold_count', 'avgSentences_count', 'enumeration', 'excla'] #+ common_words
 
 print('Reading File and Creating Data')
-df = pd.read_csv('/home/shared/CMV/Delta_Data2.csv', delimiter = ",")
+df = pd.read_csv('/home/shared/CMV/Delta_Data.csv', delimiter = ",")
 Deltas = df.values[:,3:]
 y_Deltas = np.ones(len(Deltas[:,0]),'i')
 Deltas = np.column_stack((Deltas,y_Deltas))
 # print(Deltas[:10])
 # df = pd.read_csv('NoDelta_Data.csv', delimiter = ",")
 # ds = df.sample(frac=0.005)
-ds = pd.read_csv('/home/shared/CMV/NoDelta_Data_Sample2.csv', delimiter = ",")
+ds = pd.read_csv('/home/shared/CMV/NoDelta_Data_Sample.csv', delimiter = ",")
 NoDeltas = ds.values[:,3:]
 y_NoDeltas = np.zeros(len(NoDeltas[:,0]),'i')
 NoDeltas = np.column_stack((NoDeltas,y_NoDeltas))
@@ -155,10 +152,25 @@ print("SM Deltas, SM NoDeltas = ", len(np.where(y_res == 1)[0]), len(np.where(y_
 # print(delta_count,nodelta_count)
 
 
-print("Training Ada Boost and Gradient Boosting")
+print("Training Decision Tree, Naive Bayes Classifier, and Random Forest Classifier")
 #Creating the Classifiers
-clf_ada = AdaBoostClassifier(n_estimators=100, random_state=0)
-clf_gb = GradientBoostingClassifier(n_estimators=100, random_state=0)
+# clf_RF = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+#             max_depth=80, max_features=3, max_leaf_nodes=None,
+#             min_impurity_decrease=0.0, min_impurity_split=None,
+#             min_samples_leaf=3, min_samples_split=12,
+#             min_weight_fraction_leaf=0.0, n_estimators=1000, n_jobs=None,
+#             oob_score=False, random_state=0, verbose=0, warm_start=False)
+#
+# clf_RF_SM = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+#             max_depth=80, max_features=3, max_leaf_nodes=None,
+#             min_impurity_decrease=0.0, min_impurity_split=None,
+#             min_samples_leaf=3, min_samples_split=12,
+#             min_weight_fraction_leaf=0.0, n_estimators=1000, n_jobs=None,
+#             oob_score=False, random_state=0, verbose=0, warm_start=False)
+
+clf_MLP = MLPClassifier(solver='lbfgs', alpha=1e-5,
+            hidden_layer_sizes=(10, 50), random_state=1)
+
 
 # param_grid = {
 #     'bootstrap': [True],
@@ -190,8 +202,8 @@ clf_gb = GradientBoostingClassifier(n_estimators=100, random_state=0)
 #Training without SMOTE
 x_train = np.asarray(x_train)
 # clf_RF = clf_RF.fit(x_train,y_train)
-clf_ada = clf_ada.fit(x_res, y_res)
-clf_gb = clf_gb.fit(x_res, y_res)
+
+clf_MLP = clf_MLP.fit(x_train, y_train)
 
 #Training with SMOTE
 #clf_RF = clf_RF.fit(x_res,y_res)
@@ -204,44 +216,44 @@ clf_gb = clf_gb.fit(x_res, y_res)
 
 # getImportances(clf_RF, x_train, features_list)
 
-print("Checking for Accuracy\n")
+# print("Checking for Accuracy")
 # y_predict = clf_tree.predict(x_test)
 # print(f"Accuracy score for Decision Tree is: {accuracy_score(y_test, y_predict)}")
 #
 # y_predict = clf_MNB.predict(x_test)
 # print(f"Accuracy score for Naive Bayes Classifier is: {accuracy_score(y_test, y_predict)}")
-
-
-y_predictNoDeltas = clf_ada.predict(x_testNoDeltas)
-y_predictDeltas = clf_ada.predict(x_testDeltas)
-
-print(f"Accuracy score for Ada Classifier Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
-print(f"Accuracy score for Ada Classifier No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
-
-y_test = np.concatenate([y_testDeltas,y_testNoDeltas])
-y_pred = np.concatenate([y_predictDeltas,y_predictNoDeltas])
-
-# plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
-# print("Ada Boost Confusion Matrix")
 #
-plotConfusionMatrix(y_test, y_pred, title='Ada Boost', normalize=True)
-# print()
+# y_predict = clf_RF.predict(x_test)
+# print(f"Accuracy score for Random Forest Classifier is: {accuracy_score(y_test, y_predict)}")
 
 
 
-y_predictNoDeltas = clf_gb.predict(x_testNoDeltas)
-y_predictDeltas = clf_gb.predict(x_testDeltas)
+y_predictNoDeltas = clf_MLP.predict(x_testNoDeltas)
+y_predictDeltas = clf_MLP.predict(x_testDeltas)
 
-print(f"Accuracy score for GB Classifier Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
-print(f"Accuracy score for GB Classifier No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+print(f"Accuracy score for MLP Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
+print(f"Accuracy score for MLP No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+
+
+# y_predictNoDeltas = clf_MNB.predict(x_testNoDeltas)
+# y_predictDeltas = clf_MNB.predict(x_testDeltas)
+#
+# print(f"Accuracy score for Naive Bayes Classifier Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
+# print(f"Accuracy score for Naive Bayes Classifier No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+#
+#
+# y_predictNoDeltas = clf_RF.predict(x_testNoDeltas)
+# y_predictDeltas = clf_RF.predict(x_testDeltas)
+#
+# print(f"Accuracy score for Random Forest Classifier Delta is: {accuracy_score(y_testDeltas, y_predictDeltas)}")
+# print(f"Accuracy score for Random Forest Classifier No Delta is: {accuracy_score(y_testNoDeltas, y_predictNoDeltas)}")
+
 
 # y_test = np.concatenate([y_testDeltas,y_testNoDeltas])
 # y_pred = np.concatenate([y_predictDeltas,y_predictNoDeltas])
-#
-# # plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
-# # print("Gradient Boosting Confusion Matrix")
-# plotConfusionMatrix(y_test, y_pred, title='Gradient Boosting', normalize=True)
-# print()
+
+# plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix')
+# plotConfusionMatrix(y_test, y_pred, title='Confusion Matrix', normalize=True)
 
 
 # ndeltas = np.where(y_test == 1)[0]
