@@ -27,10 +27,6 @@ For example, if someone makes a CMV submission, and I leave a comment, then we h
 
 * So, long story short, this file (the one in the "04" folder) has top-level comments that either did or did not receive a delta. Most of them don't but for those that do, I've also included the text where the OP assigned the delta to them.
 
-**Possible criteria for the algorithm:**
-* length of response
-* whether they provided links and how many links
-* if they quoted the OP
 
 ## Machine Learning Algorithms
 Decision Trees:
@@ -38,14 +34,6 @@ Decision Trees:
   * [Chapter 3: Decision Tree Classifier — Coding](https://medium.com/machine-learning-101/chapter-3-decision-tree-classifier-coding-ae7df4284e99)
   * [Chapter 4: K Nearest Neighbors Classifier](https://medium.com/machine-learning-101/k-nearest-neighbors-classifier-1c1ff404d265)
   * [Chapter 5: Random Forest Classifier](https://medium.com/machine-learning-101/chapter-5-random-forest-classifier-56dc7425c3e1)
-
-
-## To-Do List
-
-1. Clean the data -> write 04 into a *csv* file with the variables defined
-2. Learning Sklearn/Decision tree/Random Forest
-3. Write the algorithm
-4. Test the data
 
 
 ## Running the Program
