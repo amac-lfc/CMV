@@ -30,8 +30,12 @@ eWC = ["much", "more", "extremely", "very",
 'greatly', 'exaggerate', 'exaggerated', "strongly support," 'strong', 'stronger', 'strongest', 'strongly',  "extremely certain,"
 'certain', 'certainly', 'extremist', 'extreme', 'extremely', 'amazing', 'amazes', 'amazingly', 'amazed', 'amaze']
 
-# this function counts the total of
+# this function counts the total words of extremity
 getExtremityCount = lambda text,word_i=0: text.count(eWC[word_i]) if word_i == len(eWC) - 1 else text.count(eWC[word_i]) + getExtremityCount(text, word_i+1)
+
+
+
+
 
 # words of intensity
 # iWC = ["best of all," 'best', 'bestest', 'favorite', 'favorable', 'intense', 'intensified', 'intensely', 'excel',
@@ -76,7 +80,7 @@ def getNumExcla(text):
     return text.count("!")
 
 def cleanText(text):
-    punc = '\"\\/;:,.!?\n><()[]{}-'
+    punc = '\"\\/;:,.!?\n><()[]{}-%*$@#^\'=_—-’”“'
     for char in text:
         if (char in punc):
             text = text.replace(char, " ")
