@@ -25,7 +25,7 @@ def main():
     score = accuracy.score(y_pred, y_test)
     print(score)
 
-main()
+# main()
 
 def example():
     # load your data
@@ -39,13 +39,13 @@ def example():
     X, y = data[: , :-1], data[:, -1]
 
     # creates new features where its squared
-    X = squareFeatures(X)
+    X = engineer.squareFeatures(X)
 
     # split into train and test
     X_train, X_test, y_train, y_test = engineer.train_test_split(X, y, test_size=0.33)
 
     # pick a model
-    model = models.RandomForest
+    model = models.GradientBoosting
 
     # train the model
     model = model.fit(X_train, y_train)
@@ -56,3 +56,5 @@ def example():
     # score the model
     score = accuracy.score(y_pred, y_test)
     print(score)
+
+example()
