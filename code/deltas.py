@@ -81,4 +81,4 @@ def example():
     score = accuracy.score(y_2_pred, y_2_test)
     print(score)
 
-# example()
+example()
