@@ -57,9 +57,11 @@ def create_labels(input, output_delta, output_nodelta, deltas_file):
 
 def run():
     input = '/home/shared/CMV/SlimmedData/Slimmed_Comments_TextData.csv'
+
     deltas_file = '/home/shared/CMV/SortedData/delta_winning_ids.txt'
-    get_deltas(input, deltas_file)
     deltas_data_file = '/home/shared/CMV/SortedData/delta_comments_data.csv'
     nodeltas_data_file = '/home/shared/CMV/SortedData/nodelta_comments_data.csv'
+
+    get_deltas(input, deltas_file)
 
     create_labels(input, deltas_data_file, nodeltas_data_file, deltas_file)

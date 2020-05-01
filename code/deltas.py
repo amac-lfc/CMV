@@ -10,10 +10,10 @@ import engineer
 import accuracy
 
 def main():
-    # slimmer.run()
-    # labeler.run()
-    # sampler.run()
-    # features.run()
+    slimmer.run()
+    labeler.run()
+    sampler.run()
+    features.run()
 
     model = models.RandomForest()
 
@@ -25,7 +25,7 @@ def main():
     score = accuracy.score(y_pred, y_test)
     print(score)
 
-# main()
+main()
 
 def example():
 
@@ -81,4 +81,4 @@ def example():
     score = accuracy.score(y_2_pred, y_2_test)
     print(score)
 
-example()
+# example()
