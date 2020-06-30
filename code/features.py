@@ -111,7 +111,17 @@ def generateVectorFeatures(files):
 
     return vectorized_rows
 
+def getFeaturesList(string, words_input="/home/shared/CMV/FeatureData/word_list.csv"):
+    words_list = pd.read_csv(words_input, dtype="object")
+    dct = {'c':["lexical_diversity", "char_count_rounded", "link_count",
+        "quote_count", "questions_count", "bold_count", "avgSentences_count",
+        "enumeration_count", "excla_count"], 'o':["certainty_count",
+        "extremity_count"], 'n':list(words_list.columns)}
 
+    lst = []
+    for letter in string:
+        lst.extend(dct[letter])
+    return lst
 
 def generateCountFeatures(data):
     rows = data.body.to_numpy()
@@ -119,8 +129,7 @@ def generateCountFeatures(data):
     features = []
     for text in rows:
         lexical_diversity = getLexicalDiversity(text)
-        lexical_diversity_rounded = round(100 * lexical_diversity, -1)
-        char_count_rounded = round(len(text), -3)
+        char_count = len(text)
         link_count = getNumLinks(text)
         quote_count = getNumQuotes(text)
         questions_count = getNumQuestions(text)
@@ -129,7 +138,7 @@ def generateCountFeatures(data):
         enumeration_count = getNumEnumeration(text)
         excla_count = getNumExcla(text)
 
-        new_row = [lexical_diversity_rounded, char_count_rounded, link_count,
+        new_row = [lexical_diversity, char_count, link_count,
             quote_count, questions_count, bold_count, avgSentences_count,
             enumeration_count, excla_count]
 

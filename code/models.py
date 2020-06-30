@@ -27,7 +27,7 @@ def RandomForest(): return RandomForestClassifier(bootstrap=True, class_weight=N
             min_impurity_decrease=0.0, min_impurity_split=None,
             min_samples_leaf=3, min_samples_split=12,
             min_weight_fraction_leaf=0.0, n_estimators=1000, n_jobs=None,
-            oob_score=False, random_state=0, verbose=0, warm_start=False)
+            random_state=0, verbose=0, warm_start=True, oob_score=True)
 
 def MLP(): return MLPClassifier(solver='lbfgs', alpha=1e-5,
             hidden_layer_sizes=(10, 50), random_state=1)

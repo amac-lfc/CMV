@@ -18,7 +18,7 @@ def run():
     nodelta_sample_file = "/home/shared/CMV/SampledData/nodelta_sample_data.csv"
 
     print("Sampling Delta File")
-    sample(delta_file, delta_sample_file, 5000)
+    sample(delta_file, delta_sample_file, 2500)
 
     print("Sampling NoDelta File")
-    sample(nodelta_file, nodelta_sample_file, 5000)
+    sample(nodelta_file, nodelta_sample_file, 2500)
