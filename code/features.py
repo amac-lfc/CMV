@@ -111,7 +111,15 @@ def generateVectorFeatures(files):
 
     return vectorized_rows
 
-def getFeaturesList(string, words_input="/home/shared/CMV/FeatureData/word_list.csv"):
+def getFeaturesList(string='con', words_input="/home/shared/CMV/FeatureData/word_list.csv"):
+    '''
+    if you want all the feature the string should be 'conv'
+        'c' : is for feature count
+        'o' : old feature
+        'n' : word count
+        'v' : vectorized words
+    '''
+
     words_list = pd.read_csv(words_input, dtype="object")
     dct = {'c':["lexical_diversity", "char_count_rounded", "link_count",
         "quote_count", "questions_count", "bold_count", "avgSentences_count",

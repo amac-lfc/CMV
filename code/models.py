@@ -9,9 +9,10 @@ from sklearn.tree import DecisionTreeClassifier
 from keras.models import Sequential
 from keras.layers import Dense
 
+
 names = ["AdaBoost", "GradientBoosting", "PerceptronClassifier",
     "LogisticRegressionClassifier", "RandomForest", "MLP", "DecisionTree",
-    "MultinomialNB"]
+    "MultinomialNB", "FeedForwardNeuralNetwork"]
 
 def AdaBoost(): return AdaBoostClassifier(n_estimators=100, random_state=0)
 
