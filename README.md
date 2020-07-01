@@ -82,7 +82,7 @@ In order to start, the first thing you must do is make sure all the inputs and o
 
 Based on the names of your input/output files, you may need to create the folders for the output files location before running the code below.
 
-Inside the **slimmer.py** file is where the data gets trimmed to only include the information that you need. This speeds up the loading process for the data. You will find the following code in the `run()` function:
+Inside the **main.py** file is where the data gets trimmed to only include the information that you need. This speeds up the loading process for the data. You will find the following code in the `if __name__ == '__main__':`:
 ```python
 inputs = ["/home/shared/CMV/RawData/Comments_MetaData.csv", "/home/shared/CMV/RawData/Comments_TextData.csv",
     "/home/shared/CMV/RawData/Submissions_MetaData.csv", "/home/shared/CMV/RawData/Submissions_TextData.csv"]
@@ -96,7 +96,7 @@ The inputs need to be changed to the location of your saved raw data files, and 
 
 <br>
 
-Inside the **labeler.py** is where the comments that receive deltas will be separated from the rest of the comments. You will find the following code in the `run()` function:
+Inside the **main.py** is where the comments that receive deltas will be separated from the rest of the comments. You will find the following code in the `run()` function:
 ```python
 input = '/home/shared/CMV/SlimmedData/Slimmed_Comments_TextData.csv'
 
@@ -109,7 +109,7 @@ The input needs to be changed to be the Slimmed version of the Comments TextData
 
 <br>
 
-Inside the **sampler.py** is where the comments data will be sampled. It randomly selects a number of comments to train and test on the prediction algorithms. You will find the following code in the `run()` function:
+Inside the **main.py** is where the comments data will be sampled. It randomly selects a number of comments to train and test on the prediction algorithms. You will find the following code in the `if __name__ == '__main__':`:
 ```python
 delta_file = "/home/shared/CMV/SortedData/delta_comments_data.csv"
 nodelta_file = "/home/shared/CMV/SortedData/nodelta_comments_data.csv"
@@ -122,7 +122,7 @@ The delta_file is the input file with all the delta-comments data, and the nodel
 
 <br>
 
-Inside the **features.py** is where the comments data will turn into usable numeric features for our data. You will find the following code in the `run()` function:
+Inside the **main.py** is where the comments data will turn into usable numeric features for our data. You will find the following code in the `if __name__ == '__main__':`:
 ```python
 delta_input = "/home/shared/CMV/SampledData/delta_sample_data.csv"
 nodelta_input = "/home/shared/CMV/SampledData/nodelta_sample_data.csv"
@@ -137,7 +137,7 @@ For the inputs, you change their locations to their associated name input. The w
 
 <br>
 
-Once this been completed you can then run the **deltas.py** file. This will run the following code:
+Once this been completed you can then run the **main.py** file. This will run the following code:
 
 ```python
 slimmer.run()
@@ -155,15 +155,6 @@ y_pred = model.predict(X_test)
 score = accuracy.score(y_pred, y_test)
 print(score)
 ```
-
-The first four lines runs through the following programs:
-1. **slimmer.py**
-2. **labeler.py**
-3. **sampler.py**
-4. **features.py**
-
-Which we have before mentioned above.
-
 
 `model = models.RandomForet()` creates for us our prediction model.<br>
 `X_train, X_test, y_train, y_test = engineer.run(model = model)` separated our data into train and test for accuracy.
