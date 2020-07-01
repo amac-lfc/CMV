@@ -10,6 +10,8 @@ import engineer
 import accuracy
 import lib
 
+import matplotlib.pyplot as plt
+
 def createData():
 
     inputs = ["/home/shared/CMV/RawData/Comments_MetaData.csv", "/home/shared/CMV/RawData/Comments_TextData.csv",
@@ -60,6 +62,12 @@ def createData():
 
 
 if __name__ == '__main__':
+
+
+    ''' If you need to create the data call the function below:
+    createData()
+    '''
+
     print("Pick a model. Your options are: ")
     print(models.names)
 
@@ -76,13 +84,13 @@ if __name__ == '__main__':
     print("Prepping Data")
 
     nodelta_file = "/home/shared/CMV/FeatureData/all_nodelta_feature_data.csv"
-    nodelta_sample_file = "/home/shared/CMV/SampledData/sampled_nodelta_feature_data.csv"
+    nodelta_sample_file = "sampled_nodelta_feature_data.csv"
 
     print("Sampling NoDelta File")
     sampler.sample(nodelta_file, nodelta_sample_file, 20000)
 
 
-    nodelta_data = pd.read_csv("/home/shared/CMV/SampledData/sampled_nodelta_feature_data.csv"  )
+    nodelta_data = pd.read_csv(nodelta_sample_file)
     delta_data = pd.read_csv("/home/shared/CMV/FeatureData/all_delta_feature_data.csv")
 
     data = engineer.merge([nodelta_data, delta_data])
@@ -101,7 +109,15 @@ if __name__ == '__main__':
     print("Score:",score)
 
     cm = accuracy.confusion_matrix(y_test, y_pred)
-    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] # Normalize
     print("Confusion Matrix:", cm)
+
+    # Plot the confusion Matrix
+    ax = accuracy.plot_confusion_matrix(y_test, y_pred, ['no delta', 'delta'],
+                          normalize=True,
+                          title=None,
+                          cmap=plt.cm.Blues)
+    
+    plt.savefig("confusion_matrix.png")
 
     lib.getImportances(model, X, features.getFeaturesList('con'))
