@@ -137,24 +137,7 @@ For the inputs, you change their locations to their associated name input. The w
 
 <br>
 
-Once this been completed you can then run the **main.py** file. This will run the following code:
-
-```python
-slimmer.run()
-labeler.run()
-sampler.run()
-features.run()
-
-model = models.RandomForest()
-
-X_train, X_test, y_train, y_test = engineer.run(model = model)
-
-model = model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
-
-score = accuracy.score(y_pred, y_test)
-print(score)
-```
+Once this been completed you can then run the **main.py** file.
 
 `model = models.RandomForet()` creates for us our prediction model.<br>
 `X_train, X_test, y_train, y_test = engineer.run(model = model)` separated our data into train and test for accuracy.
