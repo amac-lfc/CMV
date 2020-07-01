@@ -41,6 +41,7 @@ def squareFeatures(X):
 
 
 if __name__ == '__main__':
+
     model = models.RandomForest
     print("Training Model")
 
@@ -55,4 +56,5 @@ if __name__ == '__main__':
 
 
     print("Shape of all features:", X.shape)
-    return train_test_split(X, y, test_size=0.33)
+
+    print(train_test_split(X, y, test_size=0.33))

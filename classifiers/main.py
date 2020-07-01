@@ -42,7 +42,7 @@ def createData():
     # get input files
     delta_input = "/home/shared/CMV/SortedData/delta_comments_data.csv"
     nodelta_input = "/home/shared/CMV/SortedData/nodelta_comments_data.csv"
-    word_list_input = "/home/shared/CMV/FeatureData/word_list.csv"
+    word_list_input = "../data/word_list.csv"
 
     # make output files
     output_delta = "/home/shared/CMV/FeatureData/all_delta_feature_data.csv"
@@ -79,20 +79,24 @@ if __name__ == '__main__':
     FeedForwardNeuralNetwork
     """
 
+    # model = models.RandomForest()
     model = models.RandomForest()
 
     print("Prepping Data")
 
     nodelta_file = "/home/shared/CMV/FeatureData/all_nodelta_feature_data.csv"
-    nodelta_sample_file = "sampled_nodelta_feature_data.csv"
     delta_file = "/home/shared/CMV/FeatureData/all_delta_feature_data.csv"
 
-    print("Sampling NoDelta File")
-    sampler.sample(nodelta_file, nodelta_sample_file, 20000)
-
-
-    nodelta_data = pd.read_csv(nodelta_sample_file)
+    nodelta_data = pd.read_csv(nodelta_file)
     delta_data = pd.read_csv(delta_file)
+
+    # If you want to save the sampling
+    print("Sampling NoDelta File")
+    # nodelta_sample_file = "sampled_nodelta_feature_data.csv"
+    # sampler.sample(nodelta_file, nodelta_sample_file, 20000)
+    # nodelta_data = pd.read_csv(nodelta_sample_file)
+    # if not
+    nodelta_data = nodelta_data.sample(n=20000)
 
     data = engineer.merge([nodelta_data, delta_data])
 
@@ -116,9 +120,10 @@ if __name__ == '__main__':
     # Plot the confusion Matrix
     ax = accuracy.plot_confusion_matrix(y_test, y_pred, ['no delta', 'delta'],
                           normalize=True,
-                          title=None,
+                          title='Randon Forest',
                           cmap=plt.cm.Blues)
 
     plt.savefig("confusion_matrix.png")
 
+    # Only works with cerntain models
     lib.getImportances(model, X, features.getFeaturesList('con'))
