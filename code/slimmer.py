@@ -20,7 +20,7 @@ def slim_all(inputs, outputs, columns_lst):
         slim(inputs[i], outputs[i], columns_lst[i])
 
 
-def run():
+if __name__ == '__main__':
     inputs = ["/home/shared/CMV/RawData/Comments_MetaData.csv", "/home/shared/CMV/RawData/Comments_TextData.csv",
         "/home/shared/CMV/RawData/Submissions_MetaData.csv", "/home/shared/CMV/RawData/Submissions_TextData.csv"]
 

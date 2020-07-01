@@ -85,13 +85,14 @@ if __name__ == '__main__':
 
     nodelta_file = "/home/shared/CMV/FeatureData/all_nodelta_feature_data.csv"
     nodelta_sample_file = "sampled_nodelta_feature_data.csv"
+    delta_file = "/home/shared/CMV/FeatureData/all_delta_feature_data.csv"
 
     print("Sampling NoDelta File")
     sampler.sample(nodelta_file, nodelta_sample_file, 20000)
 
 
     nodelta_data = pd.read_csv(nodelta_sample_file)
-    delta_data = pd.read_csv("/home/shared/CMV/FeatureData/all_delta_feature_data.csv")
+    delta_data = pd.read_csv(delta_file)
 
     data = engineer.merge([nodelta_data, delta_data])
 
@@ -117,7 +118,7 @@ if __name__ == '__main__':
                           normalize=True,
                           title=None,
                           cmap=plt.cm.Blues)
-    
+
     plt.savefig("confusion_matrix.png")
 
     lib.getImportances(model, X, features.getFeaturesList('con'))

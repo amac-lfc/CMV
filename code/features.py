@@ -207,7 +207,7 @@ def generateFeatures(inputs, ouputs, word_list_input, wanted_features):
 
 
 
-def run():
+if __name__ == '__main__':
     delta_input = "/home/shared/CMV/SampledData/delta_sample_data.csv"
     nodelta_input = "/home/shared/CMV/SampledData/nodelta_sample_data.csv"
     word_list_input = "/home/shared/CMV/FeatureData/word_list.csv"

@@ -10,7 +10,7 @@ def sample(input, output, max_rows):
     sample.to_csv(output, index=False)
 
 
-def run():
+if __name__ == '__main__':
     delta_file = "/home/shared/CMV/SortedData/delta_comments_data.csv"
     nodelta_file = "/home/shared/CMV/SortedData/nodelta_comments_data.csv"
 

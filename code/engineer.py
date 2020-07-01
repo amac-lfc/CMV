@@ -40,7 +40,8 @@ def squareFeatures(X):
     return np.array(X_new)
 
 
-def run(model=models.RandomForest):
+if __name__ == '__main__':
+    model = models.RandomForest
     print("Training Model")
 
     nodelta_data = pd.read_csv("/home/shared/CMV/FeatureData/nodelta_sample_feature_data.csv")

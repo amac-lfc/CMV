@@ -55,7 +55,7 @@ def create_labels(input, output_delta, output_nodelta, deltas_file):
     nodelta_data.to_csv(output_nodelta, index=False)
 
 
-def run():
+if __name__ == '__main__':
     input = '/home/shared/CMV/SlimmedData/Slimmed_Comments_TextData.csv'
 
     deltas_file = '/home/shared/CMV/SortedData/delta_winning_ids.txt'
