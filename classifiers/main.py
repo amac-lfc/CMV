@@ -94,7 +94,7 @@ if __name__ == '__main__':
     9 : 'SVM'
     10: 'SGD'
     '''
-    ModelNumber = 4
+    ModelNumber = 1
 
     # Defined the model
     print("### Model: "+models.names[ModelNumber-1]+"...")
