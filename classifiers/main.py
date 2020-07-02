@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import plot_confusion_matrix
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import StandardScaler
 
 import slimmer
 import labeler
@@ -93,7 +94,7 @@ if __name__ == '__main__':
     9 : 'SVM'
     10: 'SGD'
     '''
-    ModelNumber = 1
+    ModelNumber = 4
 
     # Defined the model
     print("### Model: "+models.names[ModelNumber-1]+"...")
@@ -115,12 +116,18 @@ if __name__ == '__main__':
     # nodelta_data = pd.read_csv(nodelta_sample_file)
     
     print(features.getFeaturesList('con'))
-    print(list(delta_data.columns[:-1]))
+    print(list(delta_data.columns))
 
     data = engineer.merge([nodelta_data, delta_data])
 
-    X, y = data[: , :-1], data[:, -1]
-    X,y = engineer.smote(X, y)
+    # X, y = data[: , :-1], data[:, -1]
+    # X,y = engineer.smote(X, y)
+
+    # scalerX = StandardScaler()
+    # scalerX.fit(X)
+    # X=scalerX.transform(X)
+
+    # y=(y-np.mean(y))/np.std(y)
 
     print("Shape of all features:", X.shape)
     X_train, X_test, y_train, y_test = engineer.train_test_split(X, y, test_size=0.33)
@@ -144,4 +151,4 @@ if __name__ == '__main__':
     plt.savefig(models.names[ModelNumber-1]+"_confusion_matrix.png")
 
     if ModelNumber==1:
-        lib.getImportances(model, X, list(delta_data.columns[:-1]))
+        lib.getImportances(model, X, list(delta_data.columns))
