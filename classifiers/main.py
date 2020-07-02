@@ -1,5 +1,9 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import plot_confusion_matrix
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
 
 import slimmer
 import labeler
@@ -9,8 +13,6 @@ import models
 import engineer
 import accuracy
 import lib
-
-import matplotlib.pyplot as plt
 
 def createData():
 
@@ -79,17 +81,24 @@ if __name__ == '__main__':
     createData()
     '''
 
-    print("Pick a model. Your options are: ")
-    print(models.names)
+    '''
+    Pick a model. Your options are:
+    1 : "RandomForest"
+    2 : "AdaBoost"
+    3 : "GradientBoosting"
+    4 : "LogisticRegression"
+    5 : "MLP"
+    6 : "DecisionTree"
+    7 : 'GaussianNB'
+    8 : 'BernoulliNB' 
+    9 : 'SVM'
+    10: 'SGD'
+    '''
+    ModelNumber = 1
 
-    """
-    Pick a model from the below list:
-
-    AdaBoost,   GradientBoosting,   Regression,  MLP,      
-    RandomForest,       DecisionTree,          GaussianNB,      SGD
-    """
-
-    model = models.RandomForest()
+    # Defined the model
+    print("### Model: "+models.names[ModelNumber-1]+"...")
+    model= getattr(models, models.names[ModelNumber-1])()
 
     print("Prepping Data")
 
@@ -106,7 +115,8 @@ if __name__ == '__main__':
     # nodelta_sample_file = "sampled_nodelta_feature_data.csv"
     # nodelta_data = pd.read_csv(nodelta_sample_file)
     
-
+    print(features.getFeaturesList('con'))
+    print(list(delta_data.columns[:-1]))
 
     data = engineer.merge([nodelta_data, delta_data])
 
@@ -120,20 +130,19 @@ if __name__ == '__main__':
     model = model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
 
-    score = accuracy.score(y_pred, y_test)
+    score = accuracy_score(y_pred, y_test)
     print("Score:",score)
 
-    cm = accuracy.confusion_matrix(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred)
     cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] # Normalize
     print("Confusion Matrix:", cm)
 
-    # Plot the confusion Matrix
-    ax = accuracy.plot_confusion_matrix(y_test, y_pred, ['no delta', 'delta'],
-                          normalize=True,
-                          title='Randon Forest',
-                          cmap=plt.cm.Blues)
+    plot_confusion_matrix(model, X_test, y_test,
+                            display_labels=['no delta', 'delta'],
+                            cmap=plt.cm.Blues,
+                            normalize='true')
+    plt.title(models.names[ModelNumber-1])
+    plt.savefig(models.names[ModelNumber-1]+"_confusion_matrix.png")
 
-    plt.savefig("confusion_matrix.png")
-
-    # Only works with cerntain models
-    lib.getImportances(model, X, features.getFeaturesList('con'))
+    if ModelNumber==1:
+        lib.getImportances(model, X, features.getFeaturesList('con'))
