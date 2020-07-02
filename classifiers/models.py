@@ -1,26 +1,25 @@
-from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.linear_model import Perceptron
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
-from keras.models import Sequential
-from keras.layers import Dense
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.linear_model import SGDClassifier
 
+import sys
+sys.setrecursionlimit(10000)
 
 names = ["AdaBoost", "GradientBoosting", "PerceptronClassifier",
-    "LogisticRegressionClassifier", "RandomForest", "MLP", "DecisionTree",
-    "MultinomialNB", "FeedForwardNeuralNetwork"]
+    "LogisticRegression", "RandomForest", "MLP", "DecisionTree", 'GaussianNB' ,'SVM']
 
 def AdaBoost(): return AdaBoostClassifier(n_estimators=100, random_state=0)
 
 def GradientBoosting(): return GradientBoostingClassifier(n_estimators=100, random_state=0)
 
-def PerceptronClassifier(): return Perceptron(tol=1e-6)
-
-def LogisticRegressionClassifier(c=1):
+def Regression(c=1):
     return LogisticRegression(C=c)
 
 def RandomForest(): return RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
@@ -40,25 +39,6 @@ def DecisionTree(): return DecisionTreeClassifier(class_weight=None, criterion='
             min_weight_fraction_leaf=0.0, presort=False, random_state=None,
             splitter='best')
 
-def MultinomialNB(): return MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
+def SVM(C=1.0) : return SVC(C=C)
 
-
-class FeedForwardNeuralNetwork:
-    def __init__(self, inputs=10, outputs=1, layers=[10,10], epochs=50):
-        self.model = Sequential()
-        for i in range(len(layers)):
-            if i == 0:
-                self.model.add(Dense(layers[i], input_dim=inputs, activation='relu'))
-            else:
-                self.model.add(Dense(layers[i], activation='relu'))
-        self.model.add(Dense(outputs, activation='sigmoid'))
-        self.model.compile(loss='binary_crossentropy', optimizer='adam')
-        self.epochs = epochs
-
-    def fit(self, X, y):
-        self.model.fit(X, y, epochs=self.epochs, verbose=1)
-        return self
-
-    def predict(self, X):
-        return self.model.predict_classes(X)
-        return self
+def SGD(): return SGDClassifier(max_iter=100000,penalty='l2')
