@@ -144,4 +144,4 @@ if __name__ == '__main__':
     plt.savefig(models.names[ModelNumber-1]+"_confusion_matrix.png")
 
     if ModelNumber==1:
-        lib.getImportances(model, X, features.getFeaturesList('con'))
+        lib.getImportances(model, X, list(delta_data.columns[:-1]))
