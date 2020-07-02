@@ -115,8 +115,8 @@ if __name__ == '__main__':
     # nodelta_sample_file = "sampled_nodelta_feature_data.csv"
     # nodelta_data = pd.read_csv(nodelta_sample_file)
     
-    print(features.getFeaturesList('con'))
-    print(list(delta_data.columns))
+    # print(features.getFeaturesList('con'))
+    # print(list(delta_data.columns))
 
     data = engineer.merge([nodelta_data, delta_data])
 
