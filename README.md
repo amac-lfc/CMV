@@ -161,7 +161,7 @@ print(score)
 
 The accaracy of each models is
 
-![accuracy scores](img/accuracy_scores)
+![accuracy scores](img/accuracy_scores.png)
 
 
 The confusion matrix for Random Forest
