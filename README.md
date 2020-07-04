@@ -79,7 +79,7 @@ The **Submissions_MetaData.csv** is the data file that contains the information 
 
 ## Quickstart
 
-In order to start, the first thing you must do is make sure all the inputs and outputs are set correctly.
+In order to start, you will need to install the libraries Sklearn, imblearning, Numpy, and matlotlib. Then, you must do is make sure all the inputs and outputs are set correctly.
 
 Based on the names of your input/output files, you may need to create the folders for the output files location before running the code below.
 

@@ -1,26 +1,27 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression as LogisticRegressionClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import BernoulliNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.linear_model import SGDClassifier
+import numpy as np
 
 import sys
 sys.setrecursionlimit(10000)
 
-names = ["AdaBoost", "GradientBoosting", "PerceptronClassifier",
-    "LogisticRegression", "RandomForest", "MLP", "DecisionTree", 'GaussianNB' ,'SVM']
+names = np.array(["RandomForest", "AdaBoost", "GradientBoosting","LogisticRegression", "MLP", "DecisionTree", 'GaussianNB', 'BernoulliNB' ,'SVM', 'SGD'])
 
 def AdaBoost(): return AdaBoostClassifier(n_estimators=100, random_state=0)
 
 def GradientBoosting(): return GradientBoostingClassifier(n_estimators=100, random_state=0)
 
-def Regression(c=1):
-    return LogisticRegression(C=c)
+def LogisticRegression(c=1):
+    return LogisticRegressionClassifier(C=c)
 
 def RandomForest(): return RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
             max_depth=80, max_leaf_nodes=None,
@@ -36,7 +37,7 @@ def DecisionTree(): return DecisionTreeClassifier(class_weight=None, criterion='
             max_features=None, max_leaf_nodes=None,
             min_impurity_decrease=0.0, min_impurity_split=None,
             min_samples_leaf=1, min_samples_split=2,
-            min_weight_fraction_leaf=0.0, presort=False, random_state=None,
+            min_weight_fraction_leaf=0.0, random_state=None,
             splitter='best')
 
 def SVM(C=1.0) : return SVC(C=C)

@@ -82,7 +82,7 @@ if __name__ == '__main__':
     '''
 
     '''
-    Pick a model. Your options are:
+    Slect which models you want to use. Your options are:
     1 : "RandomForest"
     2 : "AdaBoost"
     3 : "GradientBoosting"
@@ -94,14 +94,10 @@ if __name__ == '__main__':
     9 : 'SVM'
     10: 'SGD'
     '''
-    ModelNumber = 1
-
-    # Defined the model
-    print("### Model: "+models.names[ModelNumber-1]+"...")
-    model= getattr(models, models.names[ModelNumber-1])()
+    ModelList= [1,2,3,4,6,7,8,9]
+    # ModelList=[1]
 
     print("Prepping Data")
-
     # Reading the delta:
     delta_file = "/mnt/h/FeatureData/all_delta_feature_data.csv"
     delta_data = pd.read_csv(delta_file)
@@ -114,41 +110,63 @@ if __name__ == '__main__':
     #### If you already saved the sample file:
     # nodelta_sample_file = "sampled_nodelta_feature_data.csv"
     # nodelta_data = pd.read_csv(nodelta_sample_file)
-    
-    # print(features.getFeaturesList('con'))
-    # print(list(delta_data.columns))
 
     data = engineer.merge([nodelta_data, delta_data])
 
-    # X, y = data[: , :-1], data[:, -1]
-    # X,y = engineer.smote(X, y)
-
-    # scalerX = StandardScaler()
-    # scalerX.fit(X)
-    # X=scalerX.transform(X)
-
-    # y=(y-np.mean(y))/np.std(y)
+    X, y = data[: , :-1], data[:, -1]
+    X,y = engineer.smote(X, y)
 
     print("Shape of all features:", X.shape)
     X_train, X_test, y_train, y_test = engineer.train_test_split(X, y, test_size=0.33)
 
-    print("Fitting Model")
-    model = model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
 
-    score = accuracy_score(y_pred, y_test)
-    print("Score:",score)
+    scores = []
+    for ModelNumber in ModelList:
+        # Defined the model
+        print("### Model: "+models.names[ModelNumber-1]+"...")
+        model= getattr(models, models.names[ModelNumber-1])()
 
-    cm = confusion_matrix(y_test, y_pred)
-    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] # Normalize
-    print("Confusion Matrix:", cm)
+        print("Fitting Model")
+        model = model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
 
-    plot_confusion_matrix(model, X_test, y_test,
-                            display_labels=['no delta', 'delta'],
-                            cmap=plt.cm.Blues,
-                            normalize='true')
-    plt.title(models.names[ModelNumber-1])
-    plt.savefig(models.names[ModelNumber-1]+"_confusion_matrix.png")
+        score = accuracy_score(y_pred, y_test)
+        scores.append(score)
+        print("Score:",score)
 
-    if ModelNumber==1:
-        lib.getImportances(model, X, list(delta_data.columns))
+        cm = confusion_matrix(y_test, y_pred)
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] # Normalize
+        print("Confusion Matrix: \n", cm)
+
+        plot_confusion_matrix(model, X_test, y_test,
+                                display_labels=['no delta', 'delta'],
+                                cmap=plt.cm.Blues,
+                                normalize='true')
+        plt.title(models.names[ModelNumber-1])
+        print("Saving the confusion matrix for {0} as confusion_matrix_for_{0}.png".format(models.names[ModelNumber-1]))
+        plt.savefig("confusion_matrix_for_{0}.png".format(models.names[ModelNumber-1]))
+
+        if ModelNumber==1:
+            lib.getImportances(model, delta_data.columns[:-1],savefig="feature_importance.png")
+
+# Plot the bar chart of the different scores
+if len(ModelList) > 1:
+    plt.clf()
+    plt.rcdefaults()
+    objects = models.names[np.array(ModelList)-1]
+    y_pos = np.arange(len(objects))
+
+    # sort the scores and object in acending order
+    indices = np.argsort(scores)
+    scores=np.array(scores)[indices]
+    objects = objects[indices]
+
+    plt.barh(y_pos, scores, align='center', alpha=0.5)
+    plt.yticks(y_pos, objects)
+    plt.xlim([0,1])
+    plt.title('Accuracy Scores')
+    for i in range(len(scores)):
+        plt.annotate('{:.2f}'.format(scores[i]), xy=(scores[i],y_pos[i]))
+    plt.tight_layout()
+    print("Saving the accaracy scores as accuracy_scores.png")
+    plt.savefig("accuracy_scores.png")

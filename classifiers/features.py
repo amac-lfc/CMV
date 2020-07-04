@@ -3,21 +3,12 @@ import numpy as np
 
 from sklearn.feature_extraction.text import CountVectorizer
 
-from nltk.stem import PorterStemmer
-from nltk.corpus import stopwords
-stop_words = set(stopwords.words('english'))
-
-import nltk
-nltk.download("punkt")
-
-from nltk.tokenize import word_tokenize
 from lib import *
 
 
 replacements = np.array([["&nbsp;", " "], ["&iexcl;", "¡"], ["&cent;", "¢"], ["&pound;", "£"], ["&curren;", "¤"], ["&yen;", "¥"], ["&brvbar;", "¦"], ["&sect;", "§"], ["&uml;", "¨"], ["&copy;", "©"], ["&ordf;", "ª"], ["&laquo;", "«"], ["&not;", "¬"], ["&reg;", "®"], ["&macr;", "¯"], ["&deg;", "°"], ["&plusmn;", "±"], ["&sup2;", "²"], ["&sup3;", "³"], ["&acute;", "´"], ["&micro;", "µ"], ["&para;", "¶"], ["&cedil;", "¸"], ["&sup1;", "¹"], ["&ordm;", "º"], ["&raquo;", "»"], ["&frac14;", "¼"], ["&frac12;", "½"], ["&frac34;", "3/4"], ["&iquest;", "¿"], ["&times;", "times"], ["&divide;", "divided by"], ["&Agrave;", "À"], ["&Aacute;", "Á"], ["&Acirc;", "Â"], ["&Atilde;", "Ã"], ["&Auml;", "Ä"], ["&Aring;", "Å"], ["&AElig;", "Æ"], ["&Ccedil;", "Ç"], ["&Egrave;", "È"], ["&Eacute;", "É"], ["&Ecirc;", "Ê"], ["&Euml;", "Ë"], ["&Igrave;", "Ì"], ["&Iacute;", "Í"], ["&Icirc;", "Î"], ["&Iuml;", "Ï"], ["&ETH;", "Ð"], ["&Ntilde;", "Ñ"], ["&Ograve;", "Ò"], ["&Oacute;", "Ó"], ["&Ocirc;", "Ô"], ["&Otilde;", "Õ"], ["&Ouml;", "Ö"], ["&Oslash;", "Ø"], ["&Ugrave;", "Ù"], ["&Uacute;", "Ú"], ["&Ucirc;", "Û"], ["&Uuml;", "Ü"], ["&Yacute;", "Ý"], ["&THORN;", "Þ"], ["&szlig;", "ß"], ["&agrave;", "à"], ["&aacute;", "á"], ["&acirc;", "â"], ["&atilde;", "ã"], ["&auml;", "ä"], ["&aring;", "å"], ["&aelig;", "æ"], ["&ccedil;", "ç"], ["&egrave;", "è"], ["&eacute;", "é"], ["&ecirc;", "ê"], ["&euml;", "ë"], ["&igrave;", "ì"], ["&iacute;", "í"], ["&icirc;", "î"], ["&iuml;", "ï"], ["&eth;", "ð"], ["&ntilde;", "ñ"], ["&ograve;", "ò"], ["&oacute;", "ó"], ["&ocirc;", "ô"], ["&otilde;", "õ"], ["&ouml;", "ö"], ["&oslash;", "ø"], ["&ugrave;", "ù"], ["&uacute;", "ú"], ["&ucirc;", "û"], ["&uuml;", "ü"], ["&yacute;", "ý"], ["&thorn;", "þ"], ["&yuml;", "ÿ"], ["&amp;", "&"], ["&lt;", "<"], ["&gt;", ">"], ["&OElig;", "Œ"], ["&oelig;", "œ"], ["&Scaron;", "Š"], ["&scaron;", "š"], ["&Yuml;", "Ÿ"], ["&fnof;", "ƒ"], ["&circ;", "ˆ"], ["&tilde;", "˜"], ["&ndash;", "–"], ["&mdash;", "—"], ["&lsquo;", "‘"], ["&rsquo;", "’"], ["&sbquo;", "‚"], ["&ldquo;", "“"], ["&rdquo;", "”"], ["&bdquo;", "„"], ["&dagger;", "†"], ["&Dagger;", "‡"], ["&bull;", "•"], ["&hellip;", "…"], ["&permil;", "‰"], ["&lsaquo;", "‹"], ["&rsaquo;", "›"], ["&euro;", "€"], ["&trade;", "™"]])
 
-
-possible_features = ["o", "n", "v", "c"]
+possible_features = ["o", "n", "c"]
 
 def html_to_char(data):
     temp = data.copy()
@@ -111,13 +102,12 @@ def generateVectorFeatures(files):
 
     return vectorized_rows
 
-def getFeaturesList(string='con', words_input="/home/shared/CMV/FeatureData/word_list.csv"):
+def getFeaturesList(string='con', words_input="../data/word_list.csv"):
     '''
     if you want all the feature the string should be 'conv'
         'c' : is for feature count
         'o' : old feature
         'n' : word count
-        'v' : vectorized words
     '''
 
     words_list = pd.read_csv(words_input, dtype="object")
@@ -189,19 +179,6 @@ def generateFeatures(inputs, ouputs, word_list_input, wanted_features):
             lan_features.append(generateLanFeatures(input, word_list_input, wanted_features))
         lan_features = np.array(lan_features)
 
-    if 'v' in wanted_features:
-        print("Vector Features")
-        vec_features = np.array(generateVectorFeatures(inputs))
-
-        if 'c' in wanted_features or 'o' in wanted_features or 'n' in wanted_features:
-            print("Combining All Features")
-            features = []
-            for i in range(len(lan_features)):
-                features.append(np.hstack([lan_features[i], vec_features[i]]))
-            features = np.array(features)
-
-            return features
-        return vec_features
     return lan_features
 
 
@@ -210,7 +187,7 @@ def generateFeatures(inputs, ouputs, word_list_input, wanted_features):
 if __name__ == '__main__':
     delta_input = "/home/shared/CMV/SampledData/delta_sample_data.csv"
     nodelta_input = "/home/shared/CMV/SampledData/nodelta_sample_data.csv"
-    word_list_input = "/home/shared/CMV/FeatureData/word_list.csv"
+    word_list_input = "../data/word_list.csv"
 
     output_delta = "/home/shared/CMV/FeatureData/delta_sample_feature_data.csv"
     output_nodelta = "/home/shared/CMV/FeatureData/nodelta_sample_feature_data.csv"
