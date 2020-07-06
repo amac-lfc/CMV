@@ -52,7 +52,7 @@ def getLexicalDiversity(text):
     lenLstOfWords = len(lstOfWords)
     if lenLstOfWords == 0:
         return 0
-    return len(setOfWords)/lenLstOfWords
+    return len(setOfWords)#/lenLstOfWords
 
 # here is the counter for number of links
 def getNumLinks(text):
