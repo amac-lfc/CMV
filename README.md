@@ -285,53 +285,16 @@ If wanted_features contains the letter `'v'`, then using a *Count Vectorizer*, w
 Inside of the **models.py** there are certain preset models that you can use just by setting `model = ModelName()`.
 
 The models you can use are:
-* `AdaBoost()`
-* `GradientBoosting()`
-* `PerceptronClassifier()`
-* `LogisticRegressionClassifier()`
-* `RandomForest()`
-* `MLP()`
-* `DecisionTree()`
-* `MultinomialNB()`
-* `FeedForwardNeuralNetwork()`
+1. RandomForest()
+2. AdaBoost()
+3. GradientBoosting()
+4. LogisticRegression()
+5. DecisionTree()
+6. GaussianNB()
+7. BernoulliNB()
+8. SVM()
 
 ### Accuracy
 
-Testing the accuracy is simple. There are two functions that you can use from **accuracy.py** that return to you the accuracy. They are:
-* `score(y_pred, y_test)`
-* `balancedScore(y_pred, y_test)`
-
-## Generating Comments
-
-In the folder **textgenration** you can find a GPT2 model to generate CMV comments fomr a submission. You can run **train_model.py** and then **generate_text.py**.
-
-For example with the following submission:
-> Seeing a person dressed as a woman that is clearly a man will never not be weird.
-I know gender dysphoria is real and transgender people exist. I know that the world would be better off accepting that fact.
-But in the push to accept transgender people in society, there seems to be this awkward game of pretend that is expected to be played.
-It is one thing to simply adjust the pronouns you use to make them comfortable, but it is another thing entirely to be expected to convince yourself that they are the gender in which they identify. If you meet a trans woman that is clearly trans (most notably ones that used to be men with clear male facial features, endomorph or even receding hairlines) you are expected to actually believe she is a woman on a biological level.
-There are some very lucky biological men that can transition and be incredibly convincing, but most aren't, and if you aren't one of those lucky people, you will never be seen as an actual woman no matter how much pretend we are expected to play. We can all act like they are women, but the brain already sorts them out as "men dressed as women" way before any conscious decision is made, and it will always be weird and awkward seeing these individuals no matter how nice and accepting we are about it.
-
-Example 1 of generated comment:
-> I believe you are missing the point of gender.  The notion of gender is a social construct.  It is not something you can change.  It is a construct that can and should be changed.  In my opinion, gender is not a construct you can actually change.  It is not something that people are forced to "change".  It is a set of behaviors that people can and should mimic.  
-The issue with this is that you are saying that being forced to be a woman is like being forced to be a man.  I am not talking about "being forced to be a man..." but "being forced to be a woman is like being forced to be a man."  I would like to think you are aware of this, but I am not.  I am a man, and I am talking about being forced to be a man in a non-threatening manner.  That does not make it any less "manly."  It just makes it a little more "manly."  This is a universal experience, and one that many trans people are forced to face.  I am not saying you should not be forced to be a woman, but I am saying you should be forced to be a man.  I am not talking here about "being forced to be a man is wrong" or "being forced to be a man is wrong."  I am not saying it is okay to be forced to be a man in public, but I am saying it is ok to be forced to be a woman in private.  Just think about how uncomfortable it is for you to be forced to be a man in public, and how uncomfortable it will be for you to be forced to be a woman in the same manner.  I am willing to bet you that many trans people will not be forced to be a woman, but many will.  If you are truly bothered by this, you need to consider what the purpose of the feminine would be in relation to the masculine 
-
-Example 2 of generated comment:
-> I would go so far as to say that the transgender community has historically, and purposefully, been underfunded, underfunded, and underfunded.
-It's actually been a fairly decent start to my post, but at a really low level. I believe it was around $50M for the whole thing. At that point, I was basically looking for a buzzword, and a typo. I think it was around $20M for the first two movies. They made a deal with the studios to make a second Terminator movie, and they were basically giving us a fourth movie. When that came around, the budgets were basically the same, except for a few minor bits.
-I think that's why I believe that the transgender community has had such a negative influence on the rest of Hollywood, and the rest of the entertainment industry. 
-I think that it's been an underfunded community, and I think that it's been underfunded for a long time, but I don't think it was the first time that the LGBT community has been underfunded, either. I think you're missing the point. I think the money was spent on the very first two movies, and that the people that made them, the people that made them financially, the people that made them financially, weren't really paying their bills. That's something that are even more relevant now, because of the influence the LGBT community has had on the rest of the entertainment industry, because you didn't have a chance to really have a say in it.
-I think that it's been years of intense negotiation, both within the LGBT community and within the industry itself, and it was basically this:
-> 1.	How much money should we make to help and defend the community?
-> 2.	What do you think of the current high standards of the industry?
-> I think that your question is a little fuzzy, and you kind of need to narrow it down a bit. You're really only asking this in the sense that you're asking it in the sense that you're asking it in the sense that you're asking it in the sense that you're asking it in the sense that you're asking it. 
-> 
->I think that if you're serious about fighting this, you should talk to some smart people. You need to be willing to negotiate, but you need to be willing to talk to people who are willing to pay for it, and they need to be willing to pay for it. If you're not willing to pay, you're not going to get a decent representation. If you're willing to pay, you're not going to get a good one.
-Ultimately, you need to make sure that you're making a good enough case to convince people. If you're not in good company, you should be ashamed of yourself. It's really not a matter of whether or not you're in good company, but who is in good company?
-EDIT: Sorry for the lengthy post, but I couldn't find a good post with all of the information I needed. I'll continue to post as I get more and more errors.
-
-Example 3 of generated comment:
->I'm aware that this may be a little off topic, but I'm not going to lie about my attitude towards this. I'm *not* surprised by it. I've been taught that trans people are basically nothing more than caricatures of men, and thus women. I'm not even sure that trans people can be expected to be feminine in any way, but I assume that's the reason behind my *not* taking gender dysphoria personally.
-If I were a cis man, I'd be pissed. I'm not saying that I'm against trans people being able to transition, I'm not arguing. But I'm not saying that *men dressed as women*, I'm simply saying that my view is *completely* wrong.
-All that said, I do think that there is room for a bit of debate on this. I think that *trans* people should be treated equally, though I do think that trans people can be expected to wear the gender-shifting clothing and hairstyles that they choose, regardless of gender. And I think that trans people can be treated fairly, though I am open to that as well.
-But this isn't how it works. I've met a lot of trans people, and I've been treated pretty badly. I'm not saying that I'm feeling bad about it, just that I don't think that it's entirely fair. I think that cis people who complain about being treated like shit are just being transphobic, and that's totally unfair.
+Testing the accuracy is simple:
+`score = accuracy_score(y_pred, y_test)`
