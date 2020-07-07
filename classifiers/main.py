@@ -88,9 +88,9 @@ if __name__ == '__main__':
     3 : "GradientBoosting"
     4 : "LogisticRegression"
     5 : "DecisionTree"
-    6 : 'GaussianNB'
-    7 : 'BernoulliNB' 
-    8 : 'SVM'
+    6 : 'GaussianNB' (Gaussian naive Bayes)
+    7 : 'BernoulliNB' (Bernouille naive Bayes)
+    8 : 'SVM' (Support Vector Machine)
     '''
     ModelList= [1,2,3,4,6,7,8]
     # ModelList=[1]
@@ -122,7 +122,7 @@ if __name__ == '__main__':
     for ModelNumber in ModelList:
         # Defined the model
         print("### Model: "+models.names[ModelNumber-1]+"...")
-        model= getattr(models, models.names[ModelNumber-1])()
+        model = getattr(models, models.names[ModelNumber-1])() #  this is equivalent to model = model.LogisticRegression()
 
         print("Fitting Model")
         model = model.fit(X_train, y_train)

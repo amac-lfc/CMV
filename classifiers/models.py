@@ -12,6 +12,18 @@ import numpy as np
 import sys
 sys.setrecursionlimit(10000)
 
+
+'''
+The different models are:
+    1 : "RandomForest"
+    2 : "AdaBoost"
+    3 : "GradientBoosting"
+    4 : "LogisticRegression"
+    5 : "DecisionTree"
+    6 : 'GaussianNB' (Gaussian naive Bayes)
+    7 : 'BernoulliNB' (Bernouille naive Bayes)
+    8 : 'SVM' (Support Vector Machine)
+'''
 names = np.array(["RandomForest", "AdaBoost", "GradientBoosting","LogisticRegression", "DecisionTree", 'GaussianNB', 'BernoulliNB' ,'SVM'])
 
 def AdaBoost(): return AdaBoostClassifier(n_estimators=100, random_state=0)
