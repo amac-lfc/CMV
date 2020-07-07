@@ -285,21 +285,19 @@ If wanted_features contains the letter `'v'`, then using a *Count Vectorizer*, w
 Inside of the **models.py** there are certain preset models that you can use just by setting `model = ModelName()`.
 
 The models you can use are:
-* `AdaBoost()`
-* `GradientBoosting()`
-* `PerceptronClassifier()`
-* `LogisticRegressionClassifier()`
-* `RandomForest()`
-* `MLP()`
-* `DecisionTree()`
-* `MultinomialNB()`
-* `FeedForwardNeuralNetwork()`
-
+1. RandomForest()
+2. AdaBoost()
+3. GradientBoosting()
+4. LogisticRegression()
+5. DecisionTree()
+6. GaussianNB()
+7. BernoulliNB()
+8. SVM()
+   
 ### Accuracy
 
-Testing the accuracy is simple. There are two functions that you can use from **accuracy.py** that return to you the accuracy. They are:
-* `score(y_pred, y_test)`
-* `balancedScore(y_pred, y_test)`
+Testing the accuracy is simple:
+`score = accuracy_score(y_pred, y_test)`
 
 ## Generating Comments
 
