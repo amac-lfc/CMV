@@ -293,6 +293,8 @@ The models you can use are:
 6. GaussianNB()
 7. BernoulliNB()
 8. SVM()
+9. MLP()
+10. SGD()
    
 ### Accuracy
 
