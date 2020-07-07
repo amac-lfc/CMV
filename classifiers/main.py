@@ -87,14 +87,12 @@ if __name__ == '__main__':
     2 : "AdaBoost"
     3 : "GradientBoosting"
     4 : "LogisticRegression"
-    5 : "MLP"
-    6 : "DecisionTree"
-    7 : 'GaussianNB'
-    8 : 'BernoulliNB' 
-    9 : 'SVM'
-    10: 'SGD'
+    5 : "DecisionTree"
+    6 : 'GaussianNB'
+    7 : 'BernoulliNB' 
+    8 : 'SVM'
     '''
-    ModelList= [1,2,3,4,6,7,8,9]
+    ModelList= [1,2,3,4,6,7,8]
     # ModelList=[1]
 
     print("Prepping Data")
