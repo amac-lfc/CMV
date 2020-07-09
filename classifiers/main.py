@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import plot_confusion_matrix
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 
 import slimmer
 import labeler
@@ -105,13 +105,21 @@ if __name__ == '__main__':
     nodelta_data = pd.read_csv(nodelta_file)
     print("Sampling NoDelta File")
     nodelta_data = nodelta_data.sample(n=20000)
-    #### If you already saved the sample file:
+    ## If you already saved the sample file:
     # nodelta_sample_file = "sampled_nodelta_feature_data.csv"
     # nodelta_data = pd.read_csv(nodelta_sample_file)
 
+    # Merge the data set and add label = 0 (No Delta) 1 (Delta)
     data = engineer.merge([nodelta_data, delta_data])
 
+    # Split the data between features and labels
     X, y = data[: , :-1], data[:, -1]
+
+    # Scale all the feature between 0 and 1
+    scaler = MinMaxScaler()
+    X=scaler.fit_transform(X)
+
+    # Oversampling with SMOTE
     X,y = engineer.smote(X, y)
 
     print("Shape of all features:", X.shape)

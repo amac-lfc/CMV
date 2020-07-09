@@ -8,7 +8,8 @@ from imblearn.over_sampling import SMOTE
 
 
 def merge(dataframes):
-    print("Merging Dataframes")
+    print("Merging Dataframes and adding labels")
+    # Add label for the classifier 0 or 1
     for i in range(len(dataframes)):
         dataframes[i]['label'] = i
 
