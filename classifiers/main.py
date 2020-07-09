@@ -115,7 +115,7 @@ if __name__ == '__main__':
     # Split the data between features and labels
     X, y = data[: , :-1], data[:, -1]
 
-    # Scale all the feature between 0 and 1
+    # Scale all the features between 0 and 1
     scaler = MinMaxScaler()
     X=scaler.fit_transform(X)
 
