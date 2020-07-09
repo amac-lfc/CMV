@@ -94,9 +94,10 @@ if __name__ == '__main__':
     8 : 'SVM'
     9 : "MLP"
     10: 'SGD'
+    11 : 'XGBoost
     '''
-    ModelList= [1,2,3,4,6,7,8,9]
-    # ModelList=[1]
+    ModelList= [1,2,3,4,6,7,8,9,11]
+    # ModelList=[11]
 
     print("Prepping Data")
     # Reading the delta:

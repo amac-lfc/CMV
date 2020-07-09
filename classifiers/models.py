@@ -10,11 +10,13 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.linear_model import SGDClassifier
 import numpy as np
+from xgboost import XGBClassifier
 
 import sys
 sys.setrecursionlimit(10000)
 
-names = np.array(["RandomForest", "AdaBoost", "GradientBoosting","LogisticRegression", "MLP", "DecisionTree", 'GaussianNB', 'BernoulliNB' ,'SVM', 'SGD'])
+names = np.array(["RandomForest", "AdaBoost", "GradientBoosting","LogisticRegression", "DecisionTree", 'GaussianNB', \
+    'BernoulliNB' ,'SVM', "MLP", 'SGD', 'XGBoost'])
 
 def AdaBoost(): return AdaBoostClassifier(n_estimators=100, random_state=0)
 
@@ -43,3 +45,6 @@ def DecisionTree(): return DecisionTreeClassifier(class_weight=None, criterion='
 def SVM(C=1.0) : return SVC(C=C)
 
 def SGD(): return SGDClassifier(max_iter=100000,penalty='l2')
+
+
+def XGBoost() : return XGBClassifier()
