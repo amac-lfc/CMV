@@ -109,7 +109,7 @@ if __name__ == '__main__':
     # nodelta_sample_file = "sampled_nodelta_feature_data.csv"
     # nodelta_data = pd.read_csv(nodelta_sample_file)
 
-    # Merge the data set and add label = 0 (No Delta) 1 (Delta)
+    # Merge the data set and add labels = 0 (No Delta) 1 (Delta)
     data = engineer.merge([nodelta_data, delta_data])
 
     # Split the data between features and labels
