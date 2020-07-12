@@ -119,12 +119,11 @@ if __name__ == '__main__':
     scaler = MinMaxScaler()
     X=scaler.fit_transform(X)
 
-    # Oversampling with SMOTE
-    X,y = engineer.smote(X, y)
-
     print("Shape of all features:", X.shape)
     X_train, X_test, y_train, y_test = engineer.train_test_split(X, y, test_size=0.33)
 
+    # Oversampling with SMOTE
+    X_train,y_train = engineer.smote(X_train, y_train)
 
     scores = []
     for ModelNumber in ModelList:
