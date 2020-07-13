@@ -132,7 +132,7 @@ if __name__ == '__main__':
         model = getattr(models, models.names[ModelNumber-1])() #  this is equivalent to model = model.LogisticRegression()
 
         print("Fitting Model")
-        model = model.fit(X_train, y_train)
+        model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
 
         score = accuracy_score(y_pred, y_test)
