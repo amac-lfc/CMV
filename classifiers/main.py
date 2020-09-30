@@ -5,6 +5,8 @@ from sklearn.metrics import plot_confusion_matrix
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.utils.class_weight import compute_class_weight
+
 
 import slimmer
 import labeler
@@ -93,7 +95,7 @@ if __name__ == '__main__':
     8 : 'SVM' (Support Vector Machine)
     '''
     ModelList= [1,2,3,4,6,7,8]
-    # ModelList=[1]
+    # ModelList=[6,7]
 
     print("Prepping Data")
     # Reading the delta:
@@ -122,17 +124,35 @@ if __name__ == '__main__':
     print("Shape of all features:", X.shape)
     X_train, X_test, y_train, y_test = engineer.train_test_split(X, y, test_size=0.33)
 
-    # Oversampling with SMOTE
+    ## Oversampling with SMOTE
     X_train,y_train = engineer.smote(X_train, y_train)
+    class_weight = None
+    sample_weight = None
+
+    ## Compute class weights
+    # class_weight=compute_class_weight(class_weight='balanced',classes=np.unique(y),y=y)
+    # class_weight={0:class_weight[0],1:class_weight[1]}
+    # print(class_weight)
+    # sample_weight = np.zeros(len(y_train))
+    # sample_weight[y_train==0]=class_weight[0]
+    # sample_weight[y_train==1]=class_weight[1]
+
 
     scores = []
     for ModelNumber in ModelList:
         # Defined the model
         print("### Model: "+models.names[ModelNumber-1]+"...")
-        model = getattr(models, models.names[ModelNumber-1])() #  this is equivalent to model = model.LogisticRegression()
+        if ModelNumber in [2,3,6,7]:
+            model = getattr(models, models.names[ModelNumber-1])() #  this is equivalent to model = model.LogisticRegression()
+        else:
+            model = getattr(models, models.names[ModelNumber-1])(class_weight=class_weight)
 
         print("Fitting Model")
-        model.fit(X_train, y_train)
+        if ModelNumber in [2,3,6,7]:
+            model.fit(X_train, y_train, sample_weight=sample_weight)
+        else:
+            model.fit(X_train, y_train)
+
         y_pred = model.predict(X_test)
 
         score = accuracy_score(y_pred, y_test)
