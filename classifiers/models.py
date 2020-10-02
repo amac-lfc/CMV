@@ -28,7 +28,7 @@ The different models are:
 '''
 names = np.array(["RandomForest", "AdaBoost", "GradientBoosting","LogisticRegression", "DecisionTree", 'GaussianNB', 'BernoulliNB' ,'SVM'])
 
-def AdaBoost(): return AdaBoostClassifier(n_estimators=100, random_state=0)
+def AdaBoost(): return AdaBoostClassifier(n_estimators=100, learning_rate=1, algorithm='SAMME.R', random_state=0)
 
 def GradientBoosting(): return GradientBoostingClassifier(n_estimators=100, random_state=0)
 
