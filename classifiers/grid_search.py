@@ -107,7 +107,8 @@ if __name__ == '__main__':
     print("##########################")
     print("#### Ada Boost...")
 
-    parameters = {'smote__k_neighbors': [i for i in range(2,9)],
+    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+                 'smote__k_neighbors': [i for i in range(2,9)],
                  'adaboostclassifier__n_estimators': [25, 50, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000],
                  'adaboostclassifier__learning_rate': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
                  'adaboostclassifier__algorithm': ['SAMME', 'SAMME.R']}
@@ -137,7 +138,8 @@ if __name__ == '__main__':
     print("##########################")
     print("#### Gradient Boosting...")
 
-    parameters = {'smote__k_neighbors': [i for i in range(2,9)],
+    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+                 'smote__k_neighbors': [i for i in range(2,9)],
                  'gradientboostingclassifier__loss': ['deviance', 'exponential'],
                  'gradientboostingclassifier__learning_rate': [0.001, 0.01, 0.1, 0.5, 1.0],
                  'gradientboostingclassifier__n_estimators': [25, 50, 200],
@@ -251,7 +253,8 @@ if __name__ == '__main__':
 
     # Note: This is pretty bad since it's probably making it always say
     # class with the majority.
-    parameters = {'smote__k_neighbors': [i for i in range(2,9)],
+    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+                  'smote__k_neighbors': [i for i in range(2,9)],
                   'gaussiannb__var_smoothing': [10**-i for i in range(1,20)],
                   'gaussiannb__priors':[[1-(i/100), (i/100)] for i in range(1, 100)]}
 
@@ -280,7 +283,8 @@ if __name__ == '__main__':
     print("##########################")
     print("#### Bernoulli Naive Bayes...")
 
-    parameters = {'smote__k_neighbors': [i for i in range(2,9)],
+    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+                  'smote__k_neighbors': [i for i in range(2,9)],
                   'bernoullinb__alpha': [10E-10, 10E-7, 10E-5, 0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
                   'bernoullinb__fit_prior': [False, True],
                   'bernoullinb__class_prior':[[1-(i/100), (i/100)] for i in range(1, 100)]}
@@ -352,7 +356,8 @@ if __name__ == '__main__':
     print("##########################")
     print("#### Lasso...")
 
-    parameters = [{'smote__k_neighbors': [i for i in range(2,9)],
+    parameters = [{'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+                   'smote__k_neighbors': [i for i in range(2,9)],
                    'lasso__alpha': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0]}]
 
     # pipe = Pipeline([('smote', engineer.SMOTE()), ('clf', models.LassoClassifier())])
@@ -382,7 +387,8 @@ if __name__ == '__main__':
     print("##########################")
     print("#### Ridge...")
 
-    parameters = {'smote__k_neighbors': [i for i in range(2,9)],
+    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+                  'smote__k_neighbors': [i for i in range(2,9)],
                   'ridge__alpha': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
                   'ridge__solver': ['auto', 'svd', 'cholesky', 'lsqr', 'sparse_cg', 'sag', 'saga'] }
 
