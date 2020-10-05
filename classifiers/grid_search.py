@@ -67,69 +67,69 @@ if __name__ == '__main__':
     # classifier name.
     results = {}
 
-    #################################################################
-    ## Random Forest Classifier
-    #################################################################
-    print("##########################")
-    print("#### Random Forest...")
-
-    # parameters = {'max_depth': [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17.,18,19,20,21],
-    #              'max_features': ['auto', 'sqrt', 'log2']}
-
-    # new set of parameters
-    parameters = {'bootstrap': [True, False],
-                 'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
-                 'max_features': ['auto', 'sqrt', 'log2', None],
-                 # 'min_samples_leaf': [1, 2, 4],
-                 # 'min_samples_split': [2, 5, 10],
-                 'n_estimators': [25, 100, 200]}
-
-    clf = models.RandomForestClassifier(class_weight=class_weight)
-
-    gd = GridSearchCV(estimator=clf,
-                     param_grid = parameters,
-                     scoring='accuracy',
-                     cv=5,
-                     refit=True,
-                     n_jobs=28,
-                     verbose=1)
-
-    gd.fit(X, y)
-
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["random_forest"] = best_parameters
-
-
-    #################################################################
-    ### Ada Boost Classifier
-    ##################################################################
-    print("##########################")
-    print("#### Ada Boost...")
-
-    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
-                 'smote__k_neighbors': [i for i in range(2,9)],
-                 'adaboostclassifier__n_estimators': [25, 50, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000],
-                 'adaboostclassifier__learning_rate': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
-                 'adaboostclassifier__algorithm': ['SAMME', 'SAMME.R']}
-
-    clf = models.AdaBoost()
-
-    pipe = make_pipeline(SMOTE(),clf)
-
-    gd = GridSearchCV(estimator=pipe,
-                     param_grid = parameters,
-                     scoring='accuracy',
-                     cv=5,
-                     refit=True,
-                     n_jobs=28,
-                     verbose=1)
-
-    gd.fit(X, y)
-
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["ada_boost"] = best_parameters
+    # #################################################################
+    # ## Random Forest Classifier
+    # #################################################################
+    # print("##########################")
+    # print("#### Random Forest...")
+    #
+    # # parameters = {'max_depth': [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17.,18,19,20,21],
+    # #              'max_features': ['auto', 'sqrt', 'log2']}
+    #
+    # # new set of parameters
+    # parameters = {'bootstrap': [True, False],
+    #              'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
+    #              'max_features': ['auto', 'sqrt', 'log2', None],
+    #              # 'min_samples_leaf': [1, 2, 4],
+    #              # 'min_samples_split': [2, 5, 10],
+    #              'n_estimators': [25, 100, 200]}
+    #
+    # clf = models.RandomForestClassifier(class_weight=class_weight)
+    #
+    # gd = GridSearchCV(estimator=clf,
+    #                  param_grid = parameters,
+    #                  scoring='accuracy',
+    #                  cv=5,
+    #                  refit=True,
+    #                  n_jobs=28,
+    #                  verbose=1)
+    #
+    # gd.fit(X, y)
+    #
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["random_forest"] = best_parameters
+    #
+    #
+    # #################################################################
+    # ### Ada Boost Classifier
+    # ##################################################################
+    # print("##########################")
+    # print("#### Ada Boost...")
+    #
+    # parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+    #              'smote__k_neighbors': [i for i in range(2,9)],
+    #              'adaboostclassifier__n_estimators': [25, 50, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000],
+    #              'adaboostclassifier__learning_rate': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
+    #              'adaboostclassifier__algorithm': ['SAMME', 'SAMME.R']}
+    #
+    # clf = models.AdaBoost()
+    #
+    # pipe = make_pipeline(SMOTE(),clf)
+    #
+    # gd = GridSearchCV(estimator=pipe,
+    #                  param_grid = parameters,
+    #                  scoring='accuracy',
+    #                  cv=5,
+    #                  refit=True,
+    #                  n_jobs=28,
+    #                  verbose=1)
+    #
+    # gd.fit(X, y)
+    #
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["ada_boost"] = best_parameters
 
 
     ##################################################################
@@ -138,19 +138,28 @@ if __name__ == '__main__':
     print("##########################")
     print("#### Gradient Boosting...")
 
-    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
-                 'smote__k_neighbors': [i for i in range(2,9)],
-                 'gradientboostingclassifier__loss': ['deviance', 'exponential'],
-                 'gradientboostingclassifier__learning_rate': [0.001, 0.01, 0.1, 0.5, 1.0],
-                 'gradientboostingclassifier__n_estimators': [25, 50, 200],
+    parameters = {'smote__sampling_strategy': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 'auto'],
+                 'smote__k_neighbors': [1,2,3,4,5,6,7,8],
+
+                 'gradientboostingclassifier__learning_rate': [0.1],
+                 'gradientboostingclassifier__loss': ['deviance'],
+                 'gradientboostingclassifier__max_features': ['sqrt'],
+                 'gradientboostingclassifier__max_leaf_nodes': [None],
+                 'gradientboostingclassifier__min_samples_leaf': [1],
+                 'gradientboostingclassifier__min_samples_split': [10],
+                 'gradientboostingclassifier__n_estimators': [200],
+
+                 # 'gradientboostingclassifier__loss': ['deviance', 'exponential'],
+                 # 'gradientboostingclassifier__learning_rate': [0.001, 0.01, 0.1, 0.5, 1.0],
+                 # 'gradientboostingclassifier__n_estimators': [25, 50, 200],
                  # 'gradientboostingclassifier__subsample': [0.1, 0.2, 0.3, 0.5, 0.7, 1.0],
                  # 'gradientboostingclassifier__criterion': ['friedman_mse', 'mse', 'mae'],
-                 'gradientboostingclassifier__min_samples_leaf': [1, 2, 4],
-                 'gradientboostingclassifier__min_samples_split': [2, 5, 10],
+                 # 'gradientboostingclassifier__min_samples_leaf': [1, 2, 4],
+                 # 'gradientboostingclassifier__min_samples_split': [2, 5, 10],
                  # 'gradientboostingclassifier__max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
                  # 'gradientboostingclassifier__min_impurity_decrease': [0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9],
-                 'gradientboostingclassifier__max_features': ['auto', 'sqrt', 'log2', None],
-                 'gradientboostingclassifier__max_leaf_nodes': [5, 10, 50, 100, 200, 500, None],
+                 # 'gradientboostingclassifier__max_features': ['auto', 'sqrt', 'log2', None],
+                 # 'gradientboostingclassifier__max_leaf_nodes': [5, 10, 50, 100, 200, 500, None],
                  # 'gradientboostingclassifier__warm_start': [False, True]
                  }
 
@@ -163,7 +172,7 @@ if __name__ == '__main__':
                      cv=3,
                      refit=True,
                      n_jobs=28,
-                     verbose=1)
+                     verbose=2)
 
     gd.fit(X, y)
 
@@ -171,240 +180,240 @@ if __name__ == '__main__':
     print(best_parameters)
     results["gradient_boosting"] = best_parameters
 
-    ##################################################################
-    ### Logistic Regression Classifier
-    ##################################################################
-    print("##########################")
-    print("#### Logistic Regression...")
-
-    parameters = [
-                {'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
-                'solver': ['liblinear'],
-                'penalty' : ['l1', 'l2']},
-                {'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
-                'solver': ['saga'],
-                'penalty' : ['l1', 'l2', 'elasticnet']},
-                {'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
-                'solver': ['sag', 'lbfgs', 'newton_cg'],
-                 'penalty' : ['l2','none']},
-                {'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
-                'penalty' : ['none']}
-                 ]
-
-    clf = models.LogisticRegressionClassifier(class_weight=class_weight)
-
-    gd = GridSearchCV(estimator=clf,
-                     param_grid = parameters,
-                     scoring='accuracy',
-                     cv=5,
-                     refit=True,
-                     n_jobs=28,
-                     verbose=1)
-
-    gd.fit(X, y)
-
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["Logistic"] = best_parameters
-
-
-    ##################################################################
-    ### Decision tree
-    ##################################################################
-    print("##########################")
-    print("#### Decision Tree...")
-
-    parameters = {'criterion': ['gini', 'entropy'],
-                 'splitter': ['best', 'random'],
-                 'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
-                 'min_samples_leaf': [1, 2, 4],
-                 'min_samples_split': [2, 5, 10],
-                 'min_impurity_decrease': [0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9],
-                 'max_features': ['auto', 'sqrt', 'log2', None],
-                 'max_leaf_nodes': [5, 10, 50, 100, 200, 500, None],
-                 'class_weight': [class_weight]
-                 }
-
-    clf = models.DecisionTreeClassifier(class_weight=class_weight)
-
-
-    gd = GridSearchCV(estimator=clf,
-                     param_grid = parameters,
-                     scoring='accuracy',
-                     cv=3,
-                     refit=True,
-                     n_jobs=28,
-                     verbose=1)
-
-    gd.fit(X, y)
-
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["decision_tree"] = best_parameters
-
-
-
-    ##################################################################
-    ### Gaussian Naive Bayes Classifier
-    ##################################################################
-
-    print("##########################")
-    print("#### Gaussian Naive Bayes")
-
-    # Note: This is pretty bad since it's probably making it always say
-    # class with the majority.
-    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
-                  'smote__k_neighbors': [i for i in range(2,9)],
-                  'gaussiannb__var_smoothing': [10**-i for i in range(1,20)],
-                  'gaussiannb__priors':[[1-(i/100), (i/100)] for i in range(1, 100)]}
-
-    clf = models.GaussianNB()
-    pipe = make_pipeline(SMOTE(),clf)
-
-    gd = GridSearchCV(estimator=pipe,
-                     param_grid = parameters,
-                     scoring='accuracy',
-                     cv=2,
-                     refit=True,
-                     n_jobs=28,
-                     verbose=1)
-
-    gd.fit(X, y)
-
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["gaussian_nb"] = best_parameters
-
-
-
-    ##################################################################
-    ### Bernoulli Naive Bayes Classifier
-    ##################################################################
-    print("##########################")
-    print("#### Bernoulli Naive Bayes...")
-
-    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
-                  'smote__k_neighbors': [i for i in range(2,9)],
-                  'bernoullinb__alpha': [10E-10, 10E-7, 10E-5, 0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
-                  'bernoullinb__fit_prior': [False, True],
-                  'bernoullinb__class_prior':[[1-(i/100), (i/100)] for i in range(1, 100)]}
-
-    clf = models.BernoulliNB()
-    pipe = make_pipeline(SMOTE(),clf)
-
-    gd = GridSearchCV(estimator=pipe,
-                   param_grid = parameters,
-                   scoring='accuracy',
-                   cv=5,
-                   refit=True,
-                   n_jobs=28,
-                   verbose=1)
-
-    gd.fit(X, y)
-
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["bernoulli_nb"] = best_parameters
-
-
-
-    ##################################################################
-    ### Support Vector Machine
-    ##################################################################
-    print("##########################")
-    print("#### SVM...")
-
-
-    # parameters = {'kernel':('linear', 'rbf'), 'C':[1E-2, 10]}
+    # ##################################################################
+    # ### Logistic Regression Classifier
+    # ##################################################################
+    # print("##########################")
+    # print("#### Logistic Regression...")
+    #
+    # parameters = [
+    #             {'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
+    #             'solver': ['liblinear'],
+    #             'penalty' : ['l1', 'l2']},
+    #             {'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
+    #             'solver': ['saga'],
+    #             'penalty' : ['l1', 'l2', 'elasticnet']},
+    #             {'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
+    #             'solver': ['sag', 'lbfgs', 'newton_cg'],
+    #              'penalty' : ['l2','none']},
+    #             {'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
+    #             'penalty' : ['none']}
+    #              ]
+    #
+    # clf = models.LogisticRegressionClassifier(class_weight=class_weight)
+    #
+    # gd = GridSearchCV(estimator=clf,
+    #                  param_grid = parameters,
+    #                  scoring='accuracy',
+    #                  cv=5,
+    #                  refit=True,
+    #                  n_jobs=28,
+    #                  verbose=1)
+    #
+    # gd.fit(X, y)
+    #
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["Logistic"] = best_parameters
+    #
+    #
+    # ##################################################################
+    # ### Decision tree
+    # ##################################################################
+    # print("##########################")
+    # print("#### Decision Tree...")
+    #
+    # parameters = {'criterion': ['gini', 'entropy'],
+    #              'splitter': ['best', 'random'],
+    #              'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
+    #              'min_samples_leaf': [1, 2, 4],
+    #              'min_samples_split': [2, 5, 10],
+    #              'min_impurity_decrease': [0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9],
+    #              'max_features': ['auto', 'sqrt', 'log2', None],
+    #              'max_leaf_nodes': [5, 10, 50, 100, 200, 500, None],
+    #              'class_weight': [class_weight]
+    #              }
+    #
+    # clf = models.DecisionTreeClassifier(class_weight=class_weight)
+    #
+    #
+    # gd = GridSearchCV(estimator=clf,
+    #                  param_grid = parameters,
+    #                  scoring='accuracy',
+    #                  cv=3,
+    #                  refit=True,
+    #                  n_jobs=28,
+    #                  verbose=1)
+    #
+    # gd.fit(X, y)
+    #
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["decision_tree"] = best_parameters
+    #
+    #
+    #
+    # ##################################################################
+    # ### Gaussian Naive Bayes Classifier
+    # ##################################################################
+    #
+    # print("##########################")
+    # print("#### Gaussian Naive Bayes")
+    #
+    # # Note: This is pretty bad since it's probably making it always say
+    # # class with the majority.
+    # parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+    #               'smote__k_neighbors': [i for i in range(2,9)],
+    #               'gaussiannb__var_smoothing': [10**-i for i in range(1,20)],
+    #               'gaussiannb__priors':[[1-(i/100), (i/100)] for i in range(1, 100)]}
+    #
+    # clf = models.GaussianNB()
+    # pipe = make_pipeline(SMOTE(),clf)
+    #
+    # gd = GridSearchCV(estimator=pipe,
+    #                  param_grid = parameters,
+    #                  scoring='accuracy',
+    #                  cv=2,
+    #                  refit=True,
+    #                  n_jobs=28,
+    #                  verbose=1)
+    #
+    # gd.fit(X, y)
+    #
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["gaussian_nb"] = best_parameters
+    #
+    #
+    #
+    # ##################################################################
+    # ### Bernoulli Naive Bayes Classifier
+    # ##################################################################
+    # print("##########################")
+    # print("#### Bernoulli Naive Bayes...")
+    #
+    # parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+    #               'smote__k_neighbors': [i for i in range(2,9)],
+    #               'bernoullinb__alpha': [10E-10, 10E-7, 10E-5, 0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
+    #               'bernoullinb__fit_prior': [False, True],
+    #               'bernoullinb__class_prior':[[1-(i/100), (i/100)] for i in range(1, 100)]}
+    #
+    # clf = models.BernoulliNB()
+    # pipe = make_pipeline(SMOTE(),clf)
+    #
+    # gd = GridSearchCV(estimator=pipe,
+    #                param_grid = parameters,
+    #                scoring='accuracy',
+    #                cv=5,
+    #                refit=True,
+    #                n_jobs=28,
+    #                verbose=1)
+    #
+    # gd.fit(X, y)
+    #
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["bernoulli_nb"] = best_parameters
+    #
+    #
+    #
+    # ##################################################################
+    # ### Support Vector Machine
+    # ##################################################################
+    # print("##########################")
+    # print("#### SVM...")
+    #
+    #
+    # # parameters = {'kernel':('linear', 'rbf'), 'C':[1E-2, 10]}
+    # # parameters = [{
+    # #                 'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
+    # #                 'kernel': ['linear']
+    # #               },
+    # #              {
+    # #                 'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
+    # #                 'gamma': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
+    # #                 'kernel': ['rbf']
+    # #              }]
+    #
     # parameters = [{
-    #                 'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
-    #                 'kernel': ['linear']
-    #               },
-    #              {
-    #                 'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
-    #                 'gamma': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
-    #                 'kernel': ['rbf']
+    #                 'C': [0.001, 0.01, 0.1, 1.0, 10.0],
+    #                 'gamma': [0.001, 0.01, 0.1, 1.0, 10.0],
+    #                 'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
+    #                 'degree': [i for i in range(1, 3)],
+    #                 'shrinking': [True]
     #              }]
-
-    parameters = [{
-                    'C': [0.001, 0.01, 0.1, 1.0, 10.0],
-                    'gamma': [0.001, 0.01, 0.1, 1.0, 10.0],
-                    'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
-                    'degree': [i for i in range(1, 3)],
-                    'shrinking': [True]
-                 }]
-    clf = models.SVC(class_weight=class_weight)
-
-    gd = GridSearchCV(estimator=clf,
-                     param_grid = parameters,
-                     scoring='accuracy',
-                     cv=2,
-                     refit=True,
-                     n_jobs=28,
-                     verbose=1)
-    gd.fit(X, y)
-
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["svm"] = best_parameters
-
-
-
-    ##################################################################
-    ### Lasso
-    ##################################################################
-    print("##########################")
-    print("#### Lasso...")
-
-    parameters = [{'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
-                   'smote__k_neighbors': [i for i in range(2,9)],
-                   'lasso__alpha': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0]}]
-
-    # pipe = Pipeline([('smote', engineer.SMOTE()), ('clf', models.LassoClassifier())])
-    pipe = make_pipeline(SMOTE(),models.LassoClassifier())
-
-    gd = GridSearchCV(estimator=pipe,
-                     param_grid = parameters,
-                     cv=5,
-                     refit=True,
-                     n_jobs=28,
-                     verbose=1)
-
-
-    fit_parameters = {'sample_weight': sample_weight}
-
-    gd.fit(X, y)
-
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["lasso"] = best_parameters
-
-
-
-    ##################################################################
-    ### Ridge
-    ##################################################################
-    print("##########################")
-    print("#### Ridge...")
-
-    parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
-                  'smote__k_neighbors': [i for i in range(2,9)],
-                  'ridge__alpha': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
-                  'ridge__solver': ['auto', 'svd', 'cholesky', 'lsqr', 'sparse_cg', 'sag', 'saga'] }
-
-    pipe = make_pipeline(SMOTE(),models.RidgeClassifier())
-
-    gd = GridSearchCV(estimator=pipe,
-                     param_grid = parameters,
-                     cv=5,
-                     refit=True,
-                     n_jobs=28,
-                     verbose=1)
-
-    gd.fit(X, y)
-
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["ridge"] = best_parameters
-
-    pprint(results)
+    # clf = models.SVC(class_weight=class_weight)
+    #
+    # gd = GridSearchCV(estimator=clf,
+    #                  param_grid = parameters,
+    #                  scoring='accuracy',
+    #                  cv=2,
+    #                  refit=True,
+    #                  n_jobs=28,
+    #                  verbose=1)
+    # gd.fit(X, y)
+    #
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["svm"] = best_parameters
+    #
+    #
+    #
+    # ##################################################################
+    # ### Lasso
+    # ##################################################################
+    # print("##########################")
+    # print("#### Lasso...")
+    #
+    # parameters = [{'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+    #                'smote__k_neighbors': [i for i in range(2,9)],
+    #                'lasso__alpha': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0]}]
+    #
+    # # pipe = Pipeline([('smote', engineer.SMOTE()), ('clf', models.LassoClassifier())])
+    # pipe = make_pipeline(SMOTE(),models.LassoClassifier())
+    #
+    # gd = GridSearchCV(estimator=pipe,
+    #                  param_grid = parameters,
+    #                  cv=5,
+    #                  refit=True,
+    #                  n_jobs=28,
+    #                  verbose=1)
+    #
+    #
+    # fit_parameters = {'sample_weight': sample_weight}
+    #
+    # gd.fit(X, y)
+    #
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["lasso"] = best_parameters
+    #
+    #
+    #
+    # ##################################################################
+    # ### Ridge
+    # ##################################################################
+    # print("##########################")
+    # print("#### Ridge...")
+    #
+    # parameters = {'smote__sampling_strategy': [0.1,0.5,1.0,'auto'],
+    #               'smote__k_neighbors': [i for i in range(2,9)],
+    #               'ridge__alpha': [0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 10.0],
+    #               'ridge__solver': ['auto', 'svd', 'cholesky', 'lsqr', 'sparse_cg', 'sag', 'saga'] }
+    #
+    # pipe = make_pipeline(SMOTE(),models.RidgeClassifier())
+    #
+    # gd = GridSearchCV(estimator=pipe,
+    #                  param_grid = parameters,
+    #                  cv=5,
+    #                  refit=True,
+    #                  n_jobs=28,
+    #                  verbose=1)
+    #
+    # gd.fit(X, y)
+    #
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["ridge"] = best_parameters
+    #
+    # pprint(results)
