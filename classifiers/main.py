@@ -71,7 +71,7 @@ def create_sample_deltas(sample_size=20000):
     '''
     This function read the delta data and save a sample of it
     '''
-    nodelta_file = "/home/shared/CMV/FeatureData/all_nodelta_feature_data.csv"
+    nodelta_file = "/mnt/h/FeatureData/all_nodelta_feature_data.csv"
     nodelta_sample_file = "../data/sampled_nodelta_feature_data.csv"
     sampler.sample(nodelta_file, nodelta_sample_file, sample_size)
 
@@ -94,16 +94,16 @@ if __name__ == '__main__':
     7 : 'BernoulliNB' (Bernouille naive Bayes)
     8 : 'SVM' (Support Vector Machine)
     '''
-    # ModelList= [1,2,3,4,6,7,8]
-    ModelList=[2]
+    ModelList= [1,2,3,4,6,7,8]
+    # ModelList=[2]
 
     print("Prepping Data")
     # Reading the delta:
-    delta_file = "/home/shared/CMV/FeatureData/all_delta_feature_data.csv"
+    delta_file = "/mnt/h/FeatureData/all_delta_feature_data.csv"
     delta_data = pd.read_csv(delta_file)
 
     # Reading the no delta
-    nodelta_file = "/home/shared/CMV/FeatureData/all_nodelta_feature_data.csv"
+    nodelta_file = "/mnt/h/FeatureData/all_nodelta_feature_data.csv"
     nodelta_data = pd.read_csv(nodelta_file)
     print("Sampling NoDelta File")
     nodelta_data = nodelta_data.sample(n=20000)
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = engineer.train_test_split(X, y, test_size=0.33)
 
     ## Oversampling with SMOTE
-    X_train,y_train = engineer.smote(X_train, y_train)
+    X_train,y_train = engineer.smote(X_train, y_train, k_neighbors= 2, sampling_strategy=0.8)
     class_weight = None
     sample_weight = None
 

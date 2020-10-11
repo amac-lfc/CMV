@@ -7,6 +7,8 @@ from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.model_selection import cross_val_score
+from imblearn.over_sampling import SMOTE
+from imblearn.pipeline import make_pipeline
 
 import slimmer
 import labeler
@@ -63,29 +65,17 @@ if __name__ == '__main__':
 
     print("Shape of all features:", X.shape)
 
-    ## Compute class weights
-    class_weight=compute_class_weight(class_weight='balanced',classes=np.unique(y),y=y)
-    class_weight={0:class_weight[0],1:class_weight[1]}
-    print(class_weight)
-    sample_weight = np.zeros(len(y))
-    sample_weight[y==0]=class_weight[0]
-    sample_weight[y==1]=class_weight[1]
-
 
     scores = []
     for ModelNumber in ModelList:
         # Defined the model
         print("### Model: "+models.names[ModelNumber-1]+"...")
-        if ModelNumber in [2,3,6,7]:
-            model = getattr(models, models.names[ModelNumber-1])() #  this is equivalent to model = model.LogisticRegression()
-        else:
-            model = getattr(models, models.names[ModelNumber-1])(class_weight=class_weight)
+
+        clf =  getattr(models, models.names[ModelNumber-1])()
+        pipe = make_pipeline(SMOTE(k_neighbors= 2, sampling_strategy=0.8),clf)
 
         print("Fitting Model")
-        if ModelNumber in [2,3,6,7]:
-            all_accuracies = cross_val_score(estimator=model, X=X, y=y, cv=5, fit_params={'sample_weight': sample_weight} )
-        else:
-            all_accuracies = cross_val_score(estimator=model, X=X, y=y, cv=5)
+        all_accuracies = cross_val_score(estimator=pipe, X=X, y=y, cv=5)
 
         # all_accuracies = cross_val_score(estimator=model, X=X, y=y, cv=5)
         scores.append(all_accuracies)
@@ -115,4 +105,4 @@ if __name__ == '__main__':
                 plt.annotate('{:.2f}'.format(scores[i,k]), xy=(scores[i,k],y_pos[i]+0.16*k,), fontsize ='x-small')
         plt.tight_layout()
         print("Saving the accaracy scores as accuracy_scores.png")
-        plt.savefig("cross_val_scores.png")
+        plt.savefig("cross_val_scores_with_smote.png")
