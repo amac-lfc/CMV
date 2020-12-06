@@ -23,9 +23,9 @@ def pca(X, n_features=2):
     return pca.fit_transform(X)
 
 
-def smote(X, y):
+def smote(X, y, k_neighbors = None, sampling_strategy =  None):
     print("Running SMOTE")
-    sm = SMOTE()
+    sm = SMOTE(k_neighbors = k_neighbors, sampling_strategy = sampling_strategy)
     return sm.fit_resample(X, y)
 
 
