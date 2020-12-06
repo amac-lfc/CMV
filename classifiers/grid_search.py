@@ -32,10 +32,12 @@ if __name__ == '__main__':
     print("Prepping Data")
     # Reading the delta:
     delta_file = "/home/shared/CMV/FeatureData/all_delta_feature_data.csv"
+    # delta_file = "/mnt/h/FeatureData/all_delta_feature_data.csv"
     delta_data = pd.read_csv(delta_file)
 
     # Reading the no delta
     nodelta_file = "/home/shared/CMV/FeatureData/all_nodelta_feature_data.csv"
+    # nodelta_file = "/mnt/h/FeatureData/all_nodelta_feature_data.csv"
     nodelta_data = pd.read_csv(nodelta_file)
     print("Sampling NoDelta File")
     nodelta_data = nodelta_data.sample(n=20000)
@@ -70,37 +72,51 @@ if __name__ == '__main__':
     # #################################################################
     # ## Random Forest Classifier
     # #################################################################
-    # print("##########################")
-    # print("#### Random Forest...")
-    #
-    # # parameters = {'max_depth': [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17.,18,19,20,21],
-    # #              'max_features': ['auto', 'sqrt', 'log2']}
-    #
-    # # new set of parameters
-    # parameters = {'bootstrap': [True, False],
+    print("##########################")
+    print("#### Random Forest...")
+    
+    # parameters = {'max_depth': [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17.,18,19,20,21],
+    #              'max_features': ['auto', 'sqrt', 'log2']}
+    
+    # new set of parameters
+    parameters = {
+                 'criterion': ['gini', 'entropy'],
+                 'bootstrap': [True, False],
+                 'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
+                 'max_features': ['auto', 'sqrt', 'log2', None],
+                 'min_impurity_decrease': [0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9],
+                 'min_samples_leaf': [1, 2, 4],
+                 'min_samples_split': [2, 5, 10],
+                 'n_estimators': [25, 100, 200],
+                 'max_leaf_nodes': [5, 10, 50, 100, 200, 500, None],
+                 'class_weight': [class_weight]}
+    
+    clf = models.RandomForestClassifier()
+    
+    gd = GridSearchCV(estimator=clf,
+                     param_grid = parameters,
+                     scoring='accuracy',
+                     cv=5,
+                     refit=True,
+                     n_jobs=28,
+                     verbose=1)
+    
+    gd.fit(X, y)
+    
+    best_parameters = gd.best_params_
+    print(best_parameters)
+    results["random_forest"] = best_parameters
+    
+       # parameters = {'criterion': ['gini', 'entropy'],
+    #              'splitter': ['best', 'random'],
     #              'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
+    #              'min_samples_leaf': [1, 2, 4],
+    #              'min_samples_split': [2, 5, 10],
+    #              'min_impurity_decrease': [0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9],
     #              'max_features': ['auto', 'sqrt', 'log2', None],
-    #              # 'min_samples_leaf': [1, 2, 4],
-    #              # 'min_samples_split': [2, 5, 10],
-    #              'n_estimators': [25, 100, 200]}
-    #
-    # clf = models.RandomForestClassifier(class_weight=class_weight)
-    #
-    # gd = GridSearchCV(estimator=clf,
-    #                  param_grid = parameters,
-    #                  scoring='accuracy',
-    #                  cv=5,
-    #                  refit=True,
-    #                  n_jobs=28,
-    #                  verbose=1)
-    #
-    # gd.fit(X, y)
-    #
-    # best_parameters = gd.best_params_
-    # print(best_parameters)
-    # results["random_forest"] = best_parameters
-    #
-    #
+    #              'max_leaf_nodes': [5, 10, 50, 100, 200, 500, None],
+    #              'class_weight': [class_weight]
+    
     # #################################################################
     # ### Ada Boost Classifier
     # ##################################################################
@@ -135,50 +151,50 @@ if __name__ == '__main__':
     ##################################################################
     ### Gradient Boosting Classifier
     ##################################################################
-    print("##########################")
-    print("#### Gradient Boosting...")
+    # print("##########################")
+    # print("#### Gradient Boosting...")
 
-    parameters = {'smote__sampling_strategy': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 'auto'],
-                 'smote__k_neighbors': [1,2,3,4,5,6,7,8],
+    # parameters = {'smote__sampling_strategy': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 'auto'],
+    #              'smote__k_neighbors': [1,2,3,4,5,6,7,8],
 
-                 'gradientboostingclassifier__learning_rate': [0.1],
-                 'gradientboostingclassifier__loss': ['deviance'],
-                 'gradientboostingclassifier__max_features': ['sqrt'],
-                 'gradientboostingclassifier__max_leaf_nodes': [None],
-                 'gradientboostingclassifier__min_samples_leaf': [1],
-                 'gradientboostingclassifier__min_samples_split': [10],
-                 'gradientboostingclassifier__n_estimators': [200],
+    #              'gradientboostingclassifier__learning_rate': [0.1],
+    #              'gradientboostingclassifier__loss': ['deviance'],
+    #              'gradientboostingclassifier__max_features': ['sqrt'],
+    #              'gradientboostingclassifier__max_leaf_nodes': [None],
+    #              'gradientboostingclassifier__min_samples_leaf': [1],
+    #              'gradientboostingclassifier__min_samples_split': [10],
+    #              'gradientboostingclassifier__n_estimators': [200],
 
-                 # 'gradientboostingclassifier__loss': ['deviance', 'exponential'],
-                 # 'gradientboostingclassifier__learning_rate': [0.001, 0.01, 0.1, 0.5, 1.0],
-                 # 'gradientboostingclassifier__n_estimators': [25, 50, 200],
-                 # 'gradientboostingclassifier__subsample': [0.1, 0.2, 0.3, 0.5, 0.7, 1.0],
-                 # 'gradientboostingclassifier__criterion': ['friedman_mse', 'mse', 'mae'],
-                 # 'gradientboostingclassifier__min_samples_leaf': [1, 2, 4],
-                 # 'gradientboostingclassifier__min_samples_split': [2, 5, 10],
-                 # 'gradientboostingclassifier__max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
-                 # 'gradientboostingclassifier__min_impurity_decrease': [0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9],
-                 # 'gradientboostingclassifier__max_features': ['auto', 'sqrt', 'log2', None],
-                 # 'gradientboostingclassifier__max_leaf_nodes': [5, 10, 50, 100, 200, 500, None],
-                 # 'gradientboostingclassifier__warm_start': [False, True]
-                 }
+    #              # 'gradientboostingclassifier__loss': ['deviance', 'exponential'],
+    #              # 'gradientboostingclassifier__learning_rate': [0.001, 0.01, 0.1, 0.5, 1.0],
+    #              # 'gradientboostingclassifier__n_estimators': [25, 50, 200],
+    #              # 'gradientboostingclassifier__subsample': [0.1, 0.2, 0.3, 0.5, 0.7, 1.0],
+    #              # 'gradientboostingclassifier__criterion': ['friedman_mse', 'mse', 'mae'],
+    #              # 'gradientboostingclassifier__min_samples_leaf': [1, 2, 4],
+    #              # 'gradientboostingclassifier__min_samples_split': [2, 5, 10],
+    #              # 'gradientboostingclassifier__max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
+    #              # 'gradientboostingclassifier__min_impurity_decrease': [0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9],
+    #              # 'gradientboostingclassifier__max_features': ['auto', 'sqrt', 'log2', None],
+    #              # 'gradientboostingclassifier__max_leaf_nodes': [5, 10, 50, 100, 200, 500, None],
+    #              # 'gradientboostingclassifier__warm_start': [False, True]
+    #              }
 
-    clf = models.GradientBoosting()
-    pipe = make_pipeline(SMOTE(),clf)
+    # clf = models.GradientBoosting()
+    # pipe = make_pipeline(SMOTE(),clf)
 
-    gd = GridSearchCV(estimator=pipe,
-                     param_grid = parameters,
-                     scoring='accuracy',
-                     cv=3,
-                     refit=True,
-                     n_jobs=28,
-                     verbose=2)
+    # gd = GridSearchCV(estimator=pipe,
+    #                  param_grid = parameters,
+    #                  scoring='accuracy',
+    #                  cv=3,
+    #                  refit=True,
+    #                  n_jobs=28,
+    #                  verbose=2)
 
-    gd.fit(X, y)
+    # gd.fit(X, y)
 
-    best_parameters = gd.best_params_
-    print(best_parameters)
-    results["gradient_boosting"] = best_parameters
+    # best_parameters = gd.best_params_
+    # print(best_parameters)
+    # results["gradient_boosting"] = best_parameters
 
     # ##################################################################
     # ### Logistic Regression Classifier
@@ -416,4 +432,4 @@ if __name__ == '__main__':
     # print(best_parameters)
     # results["ridge"] = best_parameters
     #
-    # pprint(results)
+    pprint(results)

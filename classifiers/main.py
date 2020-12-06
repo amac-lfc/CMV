@@ -94,7 +94,7 @@ if __name__ == '__main__':
     7 : 'BernoulliNB' (Bernouille naive Bayes)
     8 : 'SVM' (Support Vector Machine)
     '''
-    ModelList= [1,2,3,4,6,7,8]
+    ModelList= [1,2,3,4,5,6,7,8]
     # ModelList=[2]
 
     print("Prepping Data")
@@ -125,17 +125,17 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = engineer.train_test_split(X, y, test_size=0.33)
 
     ## Oversampling with SMOTE
-    X_train,y_train = engineer.smote(X_train, y_train, k_neighbors= 2, sampling_strategy=0.8)
-    class_weight = None
-    sample_weight = None
+    # X_train,y_train = engineer.smote(X_train, y_train, k_neighbors= 2, sampling_strategy=0.8)
+    # class_weight = None
+    # sample_weight = None
 
     ## Compute class weights
-    # class_weight=compute_class_weight(class_weight='balanced',classes=np.unique(y),y=y)
-    # class_weight={0:class_weight[0],1:class_weight[1]}
-    # print(class_weight)
-    # sample_weight = np.zeros(len(y_train))
-    # sample_weight[y_train==0]=class_weight[0]
-    # sample_weight[y_train==1]=class_weight[1]
+    class_weight=compute_class_weight(class_weight='balanced',classes=np.unique(y),y=y)
+    class_weight={0:class_weight[0],1:class_weight[1]}
+    print(class_weight)
+    sample_weight = np.zeros(len(y_train))
+    sample_weight[y_train==0]=class_weight[0]
+    sample_weight[y_train==1]=class_weight[1]
 
 
     scores = []

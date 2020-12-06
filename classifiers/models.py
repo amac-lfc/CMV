@@ -57,11 +57,21 @@ params = {'logistic': {'C': 0.001, 'penalty': 'l2', 'solver': 'liblinear'},
                    'smote__k_neighbors': 8,
                    'smote__sampling_strategy': 1.0
                    },
-         'random_forest': {'bootstrap': True,
-                           'max_depth': 20,
-                           'max_features': 'log2',
-                           'n_estimators': 200
-                           },
+         'random_forest': {'bootstrap': True, 
+                            'criterion': 'gini', 
+                            'max_depth': None, 
+                            'max_features': 'sqrt', 
+                            'max_leaf_nodes': None, 
+                            'min_impurity_decrease': 0.0, 
+                            'min_samples_leaf': 4, 
+                            'min_samples_split': 2},
+         
+                    # {'bootstrap': True,
+                    #        'max_depth': 20,
+                    #        'max_features': 'log2',
+                    #        'n_estimators': 200},
+
+
          'ridge': {'ridge__alpha': 10.0,
                    'ridge__solver': 'auto',
                    'smote__k_neighbors': 2,
