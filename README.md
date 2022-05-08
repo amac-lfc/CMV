@@ -5,7 +5,7 @@ CMV has plenty of rules to encourage users to post in a civil manner, as well as
 
 Here we will use machine learning classifiers to attempt to learn what matters the most in changing the opinions of others in CMV.
 
-You can also checkout our app [CMV Check](https://cmvcheck.herokuapp.com).
+You can also checkout our app [CMV Check](http://cmvcheck.amac.xyz/).
 
 
 ---
